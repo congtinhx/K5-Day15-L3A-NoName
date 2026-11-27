@@ -196,6 +196,7 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
 | CP3 · Mở rộng benchmark | Thêm B16–B25, tăng từ 15 lên 25 câu, giữ nguyên B01–B15, metric và chuẩn đạt đã khóa. | Tăng độ phủ các ca còn thiếu và bổ sung tình huống từ phỏng vấn P2/P3, khảo sát phiếu 5/10 và review R2-080. Xem `eval/benchmark.csv` và `evidence/summary.md` §6. |
+| 27/11/2026 · CP3 · Chuẩn bị chấm | Đồng bộ hồ sơ với benchmark d2df60b, ghi đối chiếu nguồn, chuẩn bị bảng kiểm B14–B25 và đề xuất riêng phạm vi báo cáo metric CP3. | Chuẩn bị đánh giá bộ 25 câu trước khi có lượt chạy. Chưa điền điểm; phạm vi metric chờ Đức/Khoa thống nhất. Giữ nguyên benchmark, metric_spec.yaml và §7. Xem `eval/README.md` §3.1 và §4.1. |
 |  |  |  |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)

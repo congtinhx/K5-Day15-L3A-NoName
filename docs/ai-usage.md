@@ -20,7 +20,8 @@ Người phụ trách cần giải thích được nội dung thuộc phần vi�
 | Sinh dữ liệu giả lập | Chưa tổng hợp | Chưa ghi nhận mức hỗ trợ của AI | Seed 15 và quy mô dữ liệu được mô tả trong data/DATA_CARD.md; chưa ghi riêng kết quả kiểm tay | Tĩnh và Khoa |
 | Hỗ trợ chấm benchmark bằng AI | Chưa ghi nhận lượt chấm chính thức | Đã có phân tích hỗ trợ O1/O3 trong eval/README.md; chưa ghi điểm benchmark bằng AI | Điểm của người chấm và nhận xét AI được lưu riêng | Đức và Khoa |
 | Slide và tài liệu khác | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Thành viên phụ trách từng tài liệu |
-| Biên bản, nguồn tình huống và hồ sơ đánh giá CP3 | Codex | Chuẩn hóa trình bày P1–P3; cập nhật thông tin được xác nhận; chuyển thể 5 tình huống có nguồn; phân tích O1/O3 và mô tả quy trình chấm | Đức đã xác nhận cả 3 người ngoài nhóm, không ghi nhận giờ và P2 bị từ chối hoàn. Câu chuyển thể và phân tích điểm chưa được ghi nhận là đã duyệt | Đức; Khoa kiểm tra khi tích hợp câu thử |
+| Biên bản, nguồn tình huống và hồ sơ đánh giá CP3 | Codex | Chuẩn hóa trình bày P1–P3; cập nhật thông tin được xác nhận; chuyển thể 5 tình huống có nguồn; phân tích O1/O3 và mô tả quy trình chấm | Đức đã xác nhận cả 3 người ngoài nhóm, không ghi nhận giờ và P2 bị từ chối hoàn. 4 tình huống đã được Khoa tích hợp tại d2df60b; phân tích điểm chưa được người chấm xác nhận | Đức; Khoa kiểm tra khi tích hợp câu thử |
+| Chuẩn bị chấm bộ 25 câu CP3 | Codex | Đối chiếu nguồn với B17/B18/B24/B25; cập nhật Data Card và hồ sơ; trích nguyên văn tiêu chí B14–B25 thành bảng kiểm; đề xuất riêng phạm vi metric CP3 | Khoa đã tích hợp 4 tình huống vào benchmark tại d2df60b. Bảng kiểm chưa có output hoặc điểm. Phạm vi metric CP3 chờ Đức và Khoa thống nhất trước khi chấm | Đức và Khoa |
 
 ## 3. Tài liệu liên quan
 

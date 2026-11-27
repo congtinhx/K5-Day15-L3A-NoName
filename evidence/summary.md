@@ -69,7 +69,7 @@ Các nguồn hỗ trợ việc chọn tình huống cho bản chạy thử, như
 
 ### Mục đích và trạng thái
 
-Bảng dưới cung cấp 5 tình huống có nguồn để xây dựng B16–B25. Các câu chuyển thể cần được kiểm tra trước khi sử dụng; không tính chúng là người tham gia mới hoặc kết quả đánh giá đã chạy.
+Bảng dưới ghi lại 5 tình huống có nguồn đã bàn giao cho phần mở rộng CP3. Tại commit `d2df60b`, Khoa đã tích hợp 4 tình huống D02–D05 vào benchmark. D01 chưa được dùng làm câu mới riêng. Các câu chuyển thể không được tính là người tham gia mới hoặc kết quả đánh giá đã chạy.
 
 Người phụ trách nguồn phỏng vấn: Đức. Người phụ trách tích hợp vào bộ câu thử: Khoa. Người bổ sung nguồn review: Hưng.
 
@@ -83,8 +83,16 @@ Người phụ trách nguồn phỏng vấn: Đức. Người phụ trách tích
 | D04 | [Khảo sát](survey/results.csv), phiếu #5, câu 5–8 và 11 | Mình hủy đơn vì chờ lâu, tiền đã trừ nhưng chưa thấy hoàn. Kiểm tra giúp mình với. | Ưu tiên kiểm tra trong hạn xử lý hoàn; đối chiếu đơn giả lập SF1006 trước khi chọn. Số ngày chờ do dữ liệu giả lập quy định, không có trong lời kể. |
 | D05 | [Khảo sát](survey/results.csv), phiếu #10, câu 3 và 5–8 | Đơn mình thanh toán tiền mặt, chưa trả tiền mà chờ lâu quá. Mình muốn hủy thì xử lý thế nào? | Ưu tiên trường hợp thanh toán tiền mặt còn thiếu; đối chiếu đơn giả lập SF1009 trước khi chọn. Không diễn giải thành khoản tiền đã bị trừ. |
 
-### Yêu cầu tích hợp
+### Đối chiếu với benchmark đã tích hợp
 
-Khoa bổ sung mã câu B16–B25, mã đơn giả lập, `expected`, `pass_criterion` và `type`. Trường `source` sử dụng tiền tố `nguoi_dung:`, ghi rõ biên bản hoặc số phiếu, nội dung được chuyển thể và các dữ kiện giả lập thêm vào. “Giả lập” tương ứng với nhãn `synthetic` trong dữ liệu dự án.
+Các câu đề xuất trong bảng trên là bản bàn giao nguồn; input chính thức, expected và pass_criterion nằm trong [benchmark](../eval/benchmark.csv). Bảng dưới ghi nhận câu đã dùng và phân biệt dữ kiện thật với phần giả lập (`synthetic`).
 
-Giữ nguyên B01–B15. Ưu tiên D02, D04 và D05 để bổ sung hành vi còn thiếu. D01 và D03 cần được kiểm tra trùng lặp trước khi chọn. Phân công CP3 yêu cầu ít nhất 4 trong 10 câu mới có nguồn thật; 5 tình huống đề xuất chưa tự bảo đảm điều kiện này nếu có ca bị loại do trùng lặp. Khi thiếu, bổ sung nguồn review hoặc tình huống phù hợp khác trước khi chạy kiểm tra bộ câu thử.
+| Tình huống | Câu chính thức | Dữ kiện từ nguồn thật | Phần chuyển thể hoặc giả lập |
+|---|---|---|---|
+| D01 | Chưa tích hợp thành câu mới | Chờ lâu, hủy qua app, nhận tiền theo lời kể P1 | Có nội dung gần B01, không tính thêm vào số câu nguồn thật |
+| D02 | B24 | P2 báo lỗi, bấm hủy và bị từ chối hoàn | Input không có mã đơn để kiểm hành vi hỏi thêm; không gán nguyên nhân từ chối hoặc quyền hoàn khi nguồn chưa rõ |
+| D03 | B25 | P3 đặt hộ, hết nhu cầu, đơn đã xác nhận và app chặn hủy | Mã SF3002, khách U03 và ETA 19:10 là dữ kiện giả lập |
+| D04 | B17 | Phiếu #5 báo chờ lâu, đã hủy và tiền hoàn chậm/chưa về | Mã SF1006, thời điểm hủy, 1 ngày làm việc và phương thức thẻ là dữ kiện giả lập |
+| D05 | B18 | Phiếu #10 ghi COD, chờ lâu và chưa trả trước | Mã SF1009, trạng thái chờ xác nhận và quyền hủy của ca thử là dữ kiện giả lập |
+
+B22 còn sử dụng review R2-080 trong [data-mining.md §4](data-mining.md) để chuyển thể tình huống hết nhu cầu sang lời nhắn không dấu. Tổng 10 câu thêm có 4 câu `nguoi_dung`, 1 câu `data_that` và 5 câu `tu_viet`, đạt yêu cầu ít nhất 4/10 câu mới có nguồn thật. Toàn bộ benchmark có 25 câu, trong đó 10/25 câu có nguồn thật theo nhãn; B01–B15 được giữ nguyên. Việc tích hợp nguồn đã hoàn tất ở mức bộ câu thử, chưa phải bằng chứng mô hình trả lời đạt.

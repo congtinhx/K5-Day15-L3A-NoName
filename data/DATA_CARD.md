@@ -1,6 +1,6 @@
 # Data card — dữ liệu bản chạy thử dùng
 
-Bản nháp CP2 · 27/11/2026. Các trích đoạn review dùng mã đã bỏ tên. Dữ liệu đơn và khách trong bản chạy thử là dữ liệu giả lập.
+Cập nhật CP3 · 27/11/2026, theo benchmark 25 câu tại commit `d2df60b`. Các trích đoạn review dùng mã đã bỏ tên. Dữ liệu đơn và khách trong bản chạy thử là dữ liệu giả lập.
 
 ## Dataset 1 · Google Play Reviews — ShopeeFood
 
@@ -15,7 +15,9 @@ Bản nháp CP2 · 27/11/2026. Các trích đoạn review dùng mã đã bỏ t�
 | Kết quả cập nhật | Hủy đơn **34/220 (15,5%)**, không cho hủy **23/220 (10,5%)**, đã thanh toán hoặc bị trừ tiền rồi đơn hủy không hoàn hoặc mất tiền **5/220 (2,3%)**. Evidence ghi 4 ca nêu rõ mất tiền/không hoàn, còn R1-003 ghi bị trừ tiền rồi đơn tự hủy. |
 | Giới hạn | Mẫu chỉ có 1–2★, thiên về người không hài lòng, hai nhóm sao có khoảng thời gian khác nhau. Lọc ứng viên bằng từ khóa có thể bỏ sót review liên quan ngoài 35 mục đã đọc. Các tỷ lệ mô tả mẫu đã lấy. |
 
-**Review dùng trong benchmark:** `R1-086` → B03 (việc gấp, chuyển thể thành đổi kế hoạch rõ ràng), `R1-002` → B04 (chậm hoàn, chuyển từ hai tháng trong review sang 4 ngày làm việc theo fixture), `R1-074` → B05 (mua nhầm deal), `R1-108` → B07 (chờ lâu, dùng giờ đặt và ETA giả lập), `R1-110` → B08 (lo ngại ảnh hưởng tài khoản khi yêu cầu hủy; lý do đổi ý, trạng thái chờ xác nhận và lịch sử hai lần hủy là dữ kiện của SF2001/U02). R1-002, R1-074 và R1-110 được đối chiếu tại [evidence/data-mining.md](../evidence/data-mining.md) §4. Canvas cũng trích R1-074. R1-086 và R1-108 dẫn theo tin nhắn Hưng cung cấp lúc 17:24, do hai mã này chưa có trong evidence/canvas. [Benchmark](../eval/benchmark.csv) ghi nguồn và phần chuyển thể từng câu. Nội dung input là tình huống chuyển thể. Mã đơn, giờ, trạng thái và tiền là dữ kiện synthetic. Giữ `R1-083` và `R2-080` làm ứng viên CP3.
+**Review dùng trong benchmark:** `R1-086` → B03 (việc gấp, chuyển thể thành đổi kế hoạch rõ ràng), `R1-002` → B04 (chậm hoàn, chuyển từ hai tháng trong review sang 4 ngày làm việc theo fixture), `R1-074` → B05 (mua nhầm deal), `R1-108` → B07 (chờ lâu, dùng giờ đặt và ETA giả lập), `R1-110` → B08 (lo ngại ảnh hưởng tài khoản khi yêu cầu hủy; lý do đổi ý, trạng thái chờ xác nhận và lịch sử hai lần hủy là dữ kiện của SF2001/U02). R1-002, R1-074 và R1-110 được đối chiếu tại [evidence/data-mining.md](../evidence/data-mining.md) §4. Canvas cũng trích R1-074. R1-086 và R1-108 dẫn theo tin nhắn Hưng cung cấp lúc 17:24, do hai mã này chưa có trong evidence/canvas. [Benchmark](../eval/benchmark.csv) ghi nguồn và phần chuyển thể từng câu. Nội dung input là tình huống chuyển thể. Mã đơn, giờ, trạng thái và tiền là dữ kiện synthetic. `R2-080` đã được dùng cho B22 tại CP3; `R1-083` vẫn là nguồn ứng viên.
+
+**Review bổ sung CP3:** `R2-080` → B22, lấy tình huống không còn nhu cầu và chuyển thể thành lời nhắn không dấu. Mã SF4001, khách U04 và trạng thái chờ xác nhận là dữ kiện giả lập.
 
 ## Dataset 2 · Synthetic Orders and Users
 
@@ -58,3 +60,16 @@ Bản nháp CP2 · 27/11/2026. Các trích đoạn review dùng mã đã bỏ t�
 | B14 | SF1010 | Đang giao | 18:20 | 40 phút | 39.000đ |
 
 Giờ đã chờ tính từ lúc đặt, còn độ trễ tính từ ETA. B15 dùng SF1008 đã giao lúc 18:00. Triệu chứng do tin nhắn thử cung cấp. Với B01, Tĩnh xác nhận dùng toàn bộ 88.000đ của fixture và hoàn về ví ShopeePay ban đầu. Nhóm suy ra công thức để dùng trong sandbox theo [spec.md](../spec.md) §4. Mốc 1–3 ngày làm việc là thời gian kiểm tra giao dịch.
+
+## Dataset 3 · Phỏng vấn và khảo sát dùng cho câu thử CP3
+
+Nguồn phỏng vấn gồm 3 biên bản P1–P3 do Đức ghi ngày 27/11/2026. Người phỏng vấn xác nhận cả 3 người ngoài nhóm NoName; không ghi nhận giờ và chưa xác nhận độ tuổi sinh viên 18–24. Nguồn khảo sát gồm 20 phản hồi đã ẩn danh, dùng phiếu #5 và #10 cho hai câu mới. Số phiếu là thứ tự dòng dữ liệu, không tính tiêu đề. Không lưu thêm thông tin liên hệ trong quá trình chuyển thể.
+
+| Câu | Nguồn thật | Nội dung nguồn hỗ trợ | Dữ kiện giả lập / giới hạn |
+|---|---|---|---|
+| B17 | [Khảo sát](../evidence/survey/results.csv), phiếu #5, câu 5–8 và 11 | Chờ lâu, hủy được, tiền hoàn chậm hoặc chưa về | SF1006, giờ hủy, 1 ngày làm việc và phương thức thẻ do fixture quy định |
+| B18 | [Khảo sát](../evidence/survey/results.csv), phiếu #10, câu 3 và 5–8 | COD, muốn hủy vì chờ lâu, chưa trả trước | SF1009 và trạng thái chưa xác nhận do fixture quy định |
+| B24 | [P2](../evidence/interviews/P2.md), câu 2, 4 và phần làm rõ | Trạng thái lỗi, bấm hủy, bị từ chối hoàn | Không có mã đơn trong input; không đủ dữ kiện kết luận lỗi gì hoặc vì sao bị từ chối |
+| B25 | [P3](../evidence/interviews/P3.md), câu 1–2 | Đặt hộ, hết nhu cầu, đơn đã xác nhận và app chặn hủy | SF3002, U03 và ETA 19:10 là dữ kiện giả lập |
+
+Các câu mang tiền tố nguồn `nguoi_dung:`. Input là câu chuyển thể với hỗ trợ của AI; quyền hủy, khoản hoàn và kết quả mong đợi được xác định bằng chính sách và fixture, không suy ra trực tiếp từ lời kể. P1 chưa được thêm thành câu mới riêng. B01–B15 được giữ nguyên; bộ 25 câu có 4 câu `nguoi_dung`, 6 câu `data_that` và 15 câu `tu_viet`. Xem [bảng đối chiếu nguồn](../evidence/summary.md#6-tình-huống-thực-tế-đề-xuất-cho-bộ-câu-thử-cp3).
