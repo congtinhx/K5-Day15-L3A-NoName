@@ -79,7 +79,8 @@ def reason_by_keywords(text):
     if has(p, r"chua (duoc )?hoan", r"chua nhan (duoc )?tien", r"chua thay tien", r"tien (dau|chua ve)", r"bao gio hoan"):
         return "chua_hoan"
     if has(p, r"doi y", r"nham", r"khong (muon|can) (an|nua|dat)", r"doi mon", r"doi dia chi", r"doi gio",
-           r"ban viec", r"co viec", r"doi ke hoach", r"khong an nua", r"het doi"):
+           r"ban viec", r"co viec", r"doi ke hoach", r"khong an nua", r"het doi", r"da co do an",
+           r"khong (con )?(can|nhu cau)", r"dat ho"):
         return "doi_y"
     if has(p, r"\blau\b", r"\btre\b", r"cham", r"qua gio", r"doi mai", r"cho mai", r"chua giao"):
         return "cho_lau"
@@ -140,6 +141,8 @@ def template_body(d, order, flags, extra):
         if len(extra.get("don_dang_chay") or []) == 1:
             lines.append("Bạn muốn hủy đơn %s phải không? Bạn gửi lại mã đơn và lý do hủy để mình kiểm tra nhé."
                          % extra["don_dang_chay"][0])
+        elif len(extra.get("don_dang_chay") or []) > 3:
+            lines.append("Bạn gửi giúp mình mã đơn cần kiểm tra (dạng SFxxxx, xem ở mục Đơn hàng) để mình tra đúng đơn nhé.")
         elif extra.get("don_dang_chay"):
             lines.append("Bạn đang có %d đơn: %s. Bạn muốn hủy đơn nào?" %
                          (len(extra["don_dang_chay"]), ", ".join(extra["don_dang_chay"])))
@@ -175,7 +178,10 @@ def template_body(d, order, flags, extra):
         if "P4" in d["luat"] and order:
             lines.append("Lưu ý: nếu hủy vì đổi ý sẽ không được hoàn tiền, Xu và mã khuyến mãi.")
         if flags.get("tan_cong") or flags.get("tu_xung_nhan_vien"):
-            lines.append("Nếu bạn muốn hủy đơn theo quy định, hãy gửi mã đơn và lý do hủy.")
+            if order:
+                lines.append("Nếu bạn muốn hủy đơn %s theo quy định, hãy cho mình biết lý do hủy để mình kiểm tra." % order["order_id"])
+            else:
+                lines.append("Nếu bạn muốn hủy đơn theo quy định, hãy gửi mã đơn và lý do hủy.")
     elif q == "chuyen_nguoi":
         lines.append(d["ly_do"])
         if flags.get("suc_khoe"):

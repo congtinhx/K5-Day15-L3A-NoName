@@ -153,11 +153,11 @@ Sau khi nhận file lượt chạy, ghi run ID và phiên bản code/benchmark t
 
 ## 5. Kết quả các lượt đánh giá chính thức
 
-Chưa ghi nhận lượt mô hình thật đã chấm. Khi có dữ liệu, thêm một dòng cho mỗi lượt, ghi model, cấu hình, run ID và kết quả; giữ nguyên dữ liệu các lượt trước.
+Lượt 1 đã chạy 27/11/2026 23:38 bằng model thật; cột `pass` đang chờ Khoa (B01–B13) và Đức (B14–B25) chấm. Khi có dữ liệu, thêm một dòng cho mỗi lượt, ghi model, cấu hình, run ID và kết quả; giữ nguyên dữ liệu các lượt trước.
 
 | Lượt | Run ID | Model | Cấu hình | Đạt/tổng | Đạt chuẩn? |
 |---|---|---|---|---|---|
-| 1 | Chưa có | Chưa có | Chưa có | Chưa chấm | Chưa kết luận |
+| 1 | `run-1@20261127-233849` | gpt-5.4-nano | workflow cố định · 2 lời gọi model/câu (phân loại lý do + diễn đạt) · 7 công cụ · `check_cancel` bằng code · `check_llm` hậu kiểm · code sau commit sửa B25/O5/B24 (changelog §10 23:40) · 25 câu, 0 lỗi kỹ thuật · TB/câu: 2,0 lời gọi model, 4,2 lời gọi công cụ, token vào 482 / ra 92 | __/25 (chờ chấm) | Chưa kết luận |
 | 2 | Chưa có | Chưa có | Chưa có | Chưa chấm | Chưa kết luận |
 
 Báo cáo chi tiết tại [eval/report.md](report.md).

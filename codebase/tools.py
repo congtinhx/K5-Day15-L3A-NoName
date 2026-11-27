@@ -166,12 +166,11 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
             return out("tu_choi", "Đơn đã giao %.0f tiếng trước, quá hạn khiếu nại 12 tiếng." % hours, ["P7"])
         return out("tu_choi", "Đơn đã giao, không hủy được. Nếu món có vấn đề, gửi khiếu nại trong 12 tiếng.", ["P7"])
 
-    # 7. Thiếu lý do — lý do quyết định số tiền hoàn
-    if not reason:
-        return out("hoi_them", "Cần biết lý do hủy để báo đúng số tiền hoàn (đổi ý thì không hoàn).", ["P4"])
-
     # 8. Đơn chưa xác nhận → cho hủy (P1)
     if status == "cho_xac_nhan":
+        # 7. Thiếu lý do — chỉ hỏi khi đơn còn hủy được, vì lý do quyết định số tiền hoàn (P4)
+        if not reason:
+            return out("hoi_them", "Cần biết lý do hủy để báo đúng số tiền hoàn (đổi ý thì không hoàn).", ["P4"])
         warn = []
         if history.get("so_don_huy_khong_ly_do_30_ngay", 0) >= CANCEL_LIMIT and reason == "doi_y":
             warn.append("Bạn đã hủy %d đơn không lý do chính đáng; hủy thêm có thể bị khóa tài khoản vĩnh viễn (P6)."

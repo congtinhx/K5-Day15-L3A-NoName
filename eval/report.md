@@ -8,10 +8,12 @@
 
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
-| 1 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
+| 1 | `run-1@20261127-233849` (gpt-5.4-nano) | __/25 | | __/5 | __/18 | __/2 | đạt / chưa |
 | 2 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
 
 Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`.
+
+**Quan sát trace lượt 1 (trước khi chấm, chỉ là ghi nhận):** quyết định ở header khớp nhãn `expected` 25/25. `check_llm` chặn chữ model và dùng bản nháp code ở 4 câu: B04, B20, B21 (cụm "cam kết" — có thể model viết "không cam kết", tức chặn nhầm) và B17 (chữ model nói như quyết định `cho_huy` trong ca `thong_tin`). Model phân loại lý do khác từ khóa ở B11, B15, B19, B21, B24 (ghi `note` trong trace). Ứng viên cải tiến cho lượt 2: bộ chặn không bắt nhầm câu phủ định.
 
 ## 2. Lỗi lượt 1 — gom thành nhóm có tên
 

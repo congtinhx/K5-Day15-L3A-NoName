@@ -12,8 +12,8 @@ Người phụ trách cần giải thích được nội dung thuộc phần vi�
 
 | Hạng mục | Công cụ đã khai báo | Phạm vi AI hỗ trợ | Trạng thái kiểm tra | Phụ trách cập nhật |
 |---|---|---|---|---|
-| Code bản chạy thử | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Tĩnh |
-| Prompt và lời gọi mô hình | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Tĩnh |
+| Code bản chạy thử | Claude (Opus 5.5) · Codex (Khoa dùng để audit) | Claude viết `codebase/tools.py` (luật P1–P7, T1 trong `check_cancel`), `agent.py` (workflow cố định, `check_llm`), `data/make_orders.py` (seed 15), phần gọi API trong `ai.py`; sửa theo audit Codex 27/11 (P1/P2, P5, T1, sức khỏe, thiếu mã đơn, kiểm chữ model) và trước lượt 1 (B25: đơn quán đã xác nhận không hỏi lý do; O5: câu tấn công đã có mã không hỏi lại mã) | Tĩnh chạy `python run.py`, `run.py check`, `eval --try` với model thật; đối chiếu 25/25 câu benchmark ra đúng quyết định expected khi chạy chế độ giả; Khoa audit bằng Codex, Khoa + Đức chấm chéo 5 output (khớp 4/5) | Tĩnh |
+| Prompt và lời gọi mô hình | Claude (Opus 5.5) | Viết 2 prompt trong `agent.py`: `EXTRACT_SYSTEM` (phân loại lý do, trả JSON) và `WRITE_SYSTEM` (diễn đạt lại trong khung quyết định code đã chốt, cấm thêm số tiền/voucher/chính sách, không markdown); model chỉ diễn đạt, không tính tiền | Tĩnh gọi thử gpt-5.4-nano (2 lời gọi/câu, token > 0); `check_llm` thử 7 câu mẫu: chặn đúng 5 câu sai, cho qua 2 câu đúng | Tĩnh |
 | Phân tích review | Chưa tổng hợp | Chưa tổng hợp phần hỗ trợ viết script hoặc gợi ý nhãn | Kết quả đọc tay tham chiếu evidence/data-mining.md; chưa ghi riêng mức đóng góp của AI | Hưng |
 | Rà câu hỏi phỏng vấn và khảo sát | Chưa tổng hợp | Chưa ghi nhận công cụ và hoạt động cụ thể | Khi bổ sung cần nêu cách kiểm câu dẫn dắt; giữ nguyên dữ liệu trả lời thực tế | Đức và Hưng |
 | Xây dựng benchmark | Chưa tổng hợp đầy đủ | Các tình huống chuyển thể cho CP3 được ghi riêng ở dòng dưới | Mỗi câu cần nguồn, phần chuyển thể và dữ kiện giả lập; trạng thái tích hợp xem eval/README.md | Khoa |

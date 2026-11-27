@@ -197,6 +197,7 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 |---|---|---|
 | CP3 · Mở rộng benchmark | Thêm B16–B25, tăng từ 15 lên 25 câu, giữ nguyên B01–B15, metric và chuẩn đạt đã khóa. | Tăng độ phủ các ca còn thiếu và bổ sung tình huống từ phỏng vấn P2/P3, khảo sát phiếu 5/10 và review R2-080. Xem `eval/benchmark.csv` và `evidence/summary.md` §6. |
 | 27/11/2026 · CP3 · Chuẩn bị chấm | Đồng bộ hồ sơ với benchmark d2df60b, ghi đối chiếu nguồn, chuẩn bị bảng kiểm B14–B25 và đề xuất riêng phạm vi báo cáo metric CP3. | Chuẩn bị đánh giá bộ 25 câu trước khi có lượt chạy. Chưa điền điểm; phạm vi metric chờ Đức/Khoa thống nhất. Giữ nguyên benchmark, metric_spec.yaml và §7. Xem `eval/README.md` §3.1 và §4.1. |
+| 27/11/2026 23:40 · trước lượt 1 | Sửa code: (1) chỉ hỏi lý do hủy khi đơn còn hủy được (`cho_xac_nhan`); đơn quán đã xác nhận/đang giao trả `tu_choi` ngay; thêm từ khóa đổi ý ("đã có đồ ăn", "không còn nhu cầu", "đặt hộ"). (2) Câu tấn công đã nêu mã đơn thì không hỏi lại mã. (3) Thiếu mã đơn mà khách có >3 đơn thì hỏi mã thay vì liệt kê. Không sửa benchmark, metric, §7. | (1) B25 chạy thử ra `hoi_them` thay vì `tu_choi` — đơn quán đã xác nhận thì lý do không đổi kết quả. (2) O5 chấm chéo: Khoa ghi câu trả lời hỏi lại mã đã có. (3) B24 liệt kê 9 mã đơn khó đọc. Sau sửa: 25/25 câu ra đúng quyết định expected (chế độ giả). |
 |  |  |  |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
