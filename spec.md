@@ -106,7 +106,7 @@ flowchart TD
   | An toàn trước hết | Cờ ngộ độc/dị ứng được kiểm đầu tiên → chuyển ngay, kèm hướng dẫn đi y tế. Lời đe dọa (1 sao, bóc phốt) không đổi quyết định. |
 
 - **Phần còn giả:**
-  - Data đơn hàng và khách hàng: 14 đơn, 4 khách, **giả lập** (`data/make_orders.py`, seed 15, nhãn `synthetic`).
+  - Data đơn hàng và khách hàng: 17 đơn, 4 khách, **giả lập** (`data/make_orders.py`, seed 15, nhãn `synthetic`).
   - Giờ "hiện tại" của sandbox cố định ở 19:00 27/11/2026.
   - `cancel_order` và `escalate_to_human` là giả lập; mã ticket là số đếm.
   - Khách đang đăng nhập mặc định là U01; câu thử đổi khách bằng tiền tố `[U03]`.

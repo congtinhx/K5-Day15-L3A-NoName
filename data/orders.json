@@ -207,6 +207,48 @@
       "ma_khuyen_mai": null,
       "kich_ban": "T1 không áp: đang giao, trễ 40 phút",
       "label": "synthetic"
+    },
+    "SF1011": {
+      "order_id": "SF1011",
+      "user_id": "U01",
+      "quan": "Quán Mẫu 29",
+      "trang_thai": "tai_xe_da_nhan",
+      "gio_dat": "2026-11-27T17:50",
+      "gio_du_kien": "2026-11-27T18:31",
+      "tong_tien": 60000,
+      "thanh_toan": "shopeepay",
+      "xu_da_dung": 0,
+      "ma_khuyen_mai": "GIAMMAU10K",
+      "kich_ban": "T1 biên dưới: món còn ở quán, trễ 29 phút",
+      "label": "synthetic"
+    },
+    "SF1012": {
+      "order_id": "SF1012",
+      "user_id": "U01",
+      "quan": "Quán Mẫu 3",
+      "trang_thai": "quan_da_xac_nhan",
+      "gio_dat": "2026-11-27T17:50",
+      "gio_du_kien": "2026-11-27T18:30",
+      "tong_tien": 47000,
+      "thanh_toan": "the",
+      "xu_da_dung": 1000,
+      "ma_khuyen_mai": "FREESHIPMAU",
+      "kich_ban": "T1 biên: trễ đúng 30 phút (chưa > 30)",
+      "label": "synthetic"
+    },
+    "SF1013": {
+      "order_id": "SF1013",
+      "user_id": "U01",
+      "quan": "Quán Mẫu 10",
+      "trang_thai": "quan_da_xac_nhan",
+      "gio_dat": "2026-11-27T17:45",
+      "gio_du_kien": "2026-11-27T18:29",
+      "tong_tien": 177000,
+      "thanh_toan": "shopeepay",
+      "xu_da_dung": 1000,
+      "ma_khuyen_mai": "FREESHIPMAU",
+      "kich_ban": "T1 biên trên: trễ 31 phút",
+      "label": "synthetic"
     }
   }
 }
