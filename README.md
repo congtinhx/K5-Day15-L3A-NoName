@@ -125,5 +125,5 @@ Claude viết phần lớn code (`tools.py`, `agent.py`, `ai.py`, `data/make_ord
 | 4 | Bản chạy thử làm trọn lát cắt | `codebase/` · lệnh ở mục "Lệnh" |
 | 5 | Định nghĩa "tốt" + bộ câu thử | `data/DATA_CARD.md` · `eval/` |
 | 6 | Mô phỏng chi phí khi dùng thật | `cost/` |
-| 7 | Slide + demo + video dự phòng | `demo-slides.pdf` ở thư mục gốc · link video: ____ |
+| 7 | Slide + demo + video dự phòng | `demo-slides.pdf` ở thư mục gốc · link video CP3 (30 giây, gọi AI thật): https://drive.google.com/drive/folders/1TElemZ0-5jaFUnCsTbxAAa92I0uNRlU1?usp=sharing |
 | + | *Bonus:* người dùng thử | `validation/log.md` |
