@@ -195,6 +195,7 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
+| CP3 · Mở rộng benchmark | Thêm B16–B25, tăng từ 15 lên 25 câu, giữ nguyên B01–B15, metric và chuẩn đạt đã khóa. | Tăng độ phủ các ca còn thiếu và bổ sung tình huống từ phỏng vấn P2/P3, khảo sát phiếu 5/10 và review R2-080. Xem `eval/benchmark.csv` và `evidence/summary.md` §6. |
 |  |  |  |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
