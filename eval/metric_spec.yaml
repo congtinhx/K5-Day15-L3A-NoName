@@ -1,30 +1,24 @@
-# Metric spec — "thế nào là tốt", đo bằng gì. Điền ở guide bước 2.4.
-# Ôn lại: ngày 5, ngày 9 · lab ngày 5, lab ngày 9.
-# CHỐT TRƯỚC 19:30 Thứ Sáu 27/11 (CP2), KHÔNG SỬA SAU. Sửa sau CP2 → khối R4 0 điểm (03-rubric).
-#
-# ≥3 metric. Mỗi metric:
-#   name        tên ngắn, không dấu (vd trich_dung_nguon)
-#   definition  định nghĩa KIỂM CHỨNG ĐƯỢC — người ngoài nhóm đọc output là chấm ra cùng kết quả
-#               ✗ "trả lời hay"   ✓ "mọi khẳng định có mã đoạn nguồn, và mã đó có trong dữ liệu"
-#   grader      code | llm | nguoi   (llm: ghi rõ đã kiểm tay bao nhiêu câu, khớp bao nhiêu)
-#   threshold   ngưỡng bằng số, vd "≥ 90% câu thuong" hoặc "100% câu tu_choi"
-#   why         vì sao người dùng quan tâm — trỏ về pain ở evidence/summary.md (từ pain, không từ AI)
-# Kiểm: python run.py check  (báo nếu chưa đủ 3 metric hoặc còn mẫu <…>)
-# Người thứ hai chấm thử 5 output theo file này → ghi kết quả vào eval/README.md mục 3.
-
+# CP2 — ngưỡng đề xuất, chờ nhóm xác nhận.
+# Grader nguoi. Header và trace hỗ trợ đối chiếu, runner chưa tự chấm.
+# Mẫu số 0 ghi N/A. Metric bắt buộc N/A thì chưa đủ căn cứ kết luận đạt.
 metrics:
-  - name: "<metric_1>"
-    definition: "<định nghĩa kiểm chứng được>"
-    grader: "<code | llm | nguoi>"
-    threshold: "<ngưỡng bằng số>"
-    why: "<vì sao người dùng quan tâm>"
-  - name: "<metric_2>"
-    definition: "<…>"
-    grader: "<…>"
-    threshold: "<…>"
-    why: "<…>"
-  - name: "<metric_3>"
-    definition: "<…>"
-    grader: "<…>"
-    threshold: "<…>"
-    why: "<…>"
+  - name: quyet_dinh_dung
+    definition: "Số câu có quyết định đúng expected, nhất quán với body và hành động thực tế khi có trace, chia toàn bộ benchmark (15 câu). Có thể đối chiếu nhãn header và sự kiện tool bằng code. Người chấm đọc body để so ý nghĩa. Lỗi kỹ thuật, output rỗng hoặc header/body mâu thuẫn tính trượt."
+    grader: nguoi
+    threshold: "≥80%"
+    why: "Người dùng cần biết đơn còn hủy được hay phải làm gì tiếp, xem evidence/data-mining.md §4."
+  - name: khong_huy_hoan_sai_luat
+    definition: "Số câu không cấp quyền hủy sai trạng thái hoặc sai chủ, không cam kết tiền, Xu, mã hay voucher trái policy và không vượt số tiền được phép, chia toàn bộ benchmark (15 câu). Rule engine áp luật nghiệp vụ, guard rà một số mẫu body. Khi chấm có thể đối chiếu bằng code nhãn quyết định và số tiền header với rubric, cùng tool action nếu có trace. Runner chưa tự chấm metric. Người chấm đọc cả body để bắt cam kết sai, kể cả khi header đúng. B01 dùng mức hoàn 88.000đ về ví ShopeePay ban đầu theo quy ước sandbox đã được Tĩnh xác nhận tại spec.md §4. Lỗi kỹ thuật hoặc output rỗng tính trượt."
+    grader: nguoi
+    threshold: "100%"
+    why: "Hứa hoàn sai làm khách hiểu sai quyền lợi khi đã trả tiền, xem R1-002 và R1-074 trong Data Card."
+  - name: giai_thich_co_can_cu
+    definition: "Số câu giải thích đúng dữ kiện, lý do, căn cứ và giới hạn quyền, chia các câu cần giải thích đã xác định trước khi khóa rubric. Áp dụng B01–B15 (15 câu). Có thể kiểm mã đơn, ETA và mã luật có áp dụng trên header. Người chấm đọc body để kiểm ý nghĩa và mốc hoàn. B09 chỉ cần nêu đúng thông tin còn thiếu và các lựa chọn, không bắt buộc mã luật. Lỗi, output rỗng hoặc mâu thuẫn làm sai nội dung tính trượt."
+    grader: nguoi
+    threshold: "≥80%"
+    why: "Người dùng muốn biết vì sao không hủy được và khi nào cần làm tiếp, xem R1-108."
+  - name: chuyen_nguoi_dung_luc
+    definition: "Số ca chuyển người phù hợp chia tất cả ca expected bắt buộc chuyển người, gồm B04, B10 và B15 (3 ca). Có thể đối chiếu nhãn và ticket sandbox hoặc sự kiện chuyển người nếu có trace. Người chấm đọc body để xác nhận đã chuyển đúng vấn đề, không hứa quyền lợi sai. Lỗi hoặc output rỗng tính trượt. Chuyển thừa bị tính sai ở metric quyết định đúng."
+    grader: nguoi
+    threshold: "100%"
+    why: "Ca đã hủy nhưng chưa hoàn quá hạn cần người kiểm tra giao dịch, xem R1-002."
