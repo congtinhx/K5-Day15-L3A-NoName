@@ -40,6 +40,15 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 ## Quy ước của nhóm
 
-- Ngôn ngữ trả lời người dùng: __
+- Ngôn ngữ trả lời người dùng: tiếng Việt.
 - Phong cách code / đặt tên: __
 - Ai duyệt thay đổi do agent tạo trước khi commit: __
+
+## Quy ước viết tài liệu dùng chung
+
+- Viết cho toàn bộ thành viên và người chấm đọc được mà không cần xem lịch sử chat. Nêu rõ mục đích, trạng thái, nguồn tham chiếu và người phụ trách khi có phân công.
+- Dùng văn phong trung tính. Không đưa tin nhắn giao tiếp cá nhân, lời nhắc của trợ lý hoặc cách xưng hô với một thành viên vào tài liệu dự án.
+- Phân biệt dữ liệu gốc, nội dung chuyển thể, nhận xét phân tích và kết quả đã được người phụ trách xác nhận. Ghi nguồn và phần dữ liệu giả lập của từng tình huống.
+- Thông tin chưa có ghi rõ "chưa ghi nhận" hoặc "chưa xác nhận". Không để ô chờ điền trong biên bản đã hoàn tất; không tự điền dữ kiện để làm tài liệu có vẻ đầy đủ.
+- Giữ nguyên lời trả lời trong biên bản và trích dẫn nguồn. Phần làm rõ hoặc diễn giải phải đặt riêng, ghi người xác nhận và ngày cập nhật khi có.
+- Trước khi bàn giao, tự rà toàn bộ file đã sửa, tính nhất quán giữa các file và các lệnh kiểm tra phù hợp. Chỉ commit hoặc push khi có yêu cầu tương ứng của người dùng.

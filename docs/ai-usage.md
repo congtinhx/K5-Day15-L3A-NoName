@@ -1,18 +1,31 @@
-# Khai báo dùng AI
+# Khai báo sử dụng AI của nhóm NoName
 
-README của nhóm có mục "Dùng AI vào việc gì" (2–3 dòng, bắt buộc). Ghi chi tiết vào bảng dưới đây.
+Tài liệu ghi nhận AI được dùng vào việc gì, phạm vi hỗ trợ và trách nhiệm kiểm tra của thành viên. Cập nhật ngày 27/11/2026. Phần tóm tắt sử dụng AI trong README của nhóm cần thống nhất với hồ sơ này.
 
-> Luật của đề: dùng AI để làm bài thoải mái, nhưng **ai không giải thích được phần có tên mình thì phần đó nhận 0 điểm**. Khai thiếu không bị trừ; giấu mới bị.
+## 1. Nguyên tắc ghi nhận
 
-| Việc | Công cụ AI | AI làm gì | Người kiểm/sửa gì | Ai phụ trách |
+Chỉ ghi hoạt động và kết quả kiểm tra đã thực hiện. Trạng thái “chưa tổng hợp” nghĩa là hồ sơ chưa có đủ thông tin khai báo, không có nghĩa hạng mục không sử dụng AI. Thành viên phụ trách bổ sung công cụ, phạm vi hỗ trợ và kết quả kiểm tra thực tế khi có.
+
+Người phụ trách cần giải thích được nội dung thuộc phần việc của mình. AI không thay thế người tham gia phỏng vấn, người trả lời khảo sát hoặc người chấm độc lập.
+
+## 2. Các hạng mục sử dụng AI
+
+| Hạng mục | Công cụ đã khai báo | Phạm vi AI hỗ trợ | Trạng thái kiểm tra | Phụ trách cập nhật |
 |---|---|---|---|---|
-| Code bản chạy thử | | | | |
-| Prompt / thiết kế lời gọi mô hình | | | | |
-| Đào data (viết script đếm, gợi ý nhãn) | | | Kiểm tay __ dòng, khớp __ | |
-| Rà câu hỏi phỏng vấn / khảo sát | | Chỉ rà câu dẫn dắt | | |
-| Viết câu thử (benchmark) | | | Mỗi câu thử có `source`; câu thử AI viết được ghi rõ | |
-| Sinh data `synthetic` (nếu có) | | | Seed __ · kiểm tay __ dòng | |
-| Chấm cột `pass` bằng LLM (nếu có) | | | Kiểm tra thủ công __ câu thử, khớp __/__ | |
-| Slide, văn bản | | | | |
+| Code bản chạy thử | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Tĩnh |
+| Prompt và lời gọi mô hình | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Tĩnh |
+| Phân tích review | Chưa tổng hợp | Chưa tổng hợp phần hỗ trợ viết script hoặc gợi ý nhãn | Kết quả đọc tay tham chiếu evidence/data-mining.md; chưa ghi riêng mức đóng góp của AI | Hưng |
+| Rà câu hỏi phỏng vấn và khảo sát | Chưa tổng hợp | Chưa ghi nhận công cụ và hoạt động cụ thể | Khi bổ sung cần nêu cách kiểm câu dẫn dắt; giữ nguyên dữ liệu trả lời thực tế | Đức và Hưng |
+| Xây dựng benchmark | Chưa tổng hợp đầy đủ | Các tình huống chuyển thể cho CP3 được ghi riêng ở dòng dưới | Mỗi câu cần nguồn, phần chuyển thể và dữ kiện giả lập; trạng thái tích hợp xem eval/README.md | Khoa |
+| Sinh dữ liệu giả lập | Chưa tổng hợp | Chưa ghi nhận mức hỗ trợ của AI | Seed 15 và quy mô dữ liệu được mô tả trong data/DATA_CARD.md; chưa ghi riêng kết quả kiểm tay | Tĩnh và Khoa |
+| Hỗ trợ chấm benchmark bằng AI | Chưa ghi nhận lượt chấm chính thức | Đã có phân tích hỗ trợ O1/O3 trong eval/README.md; chưa ghi điểm benchmark bằng AI | Điểm của người chấm và nhận xét AI được lưu riêng | Đức và Khoa |
+| Slide và tài liệu khác | Chưa tổng hợp | Chưa tổng hợp trong hồ sơ | Chưa ghi nhận kết quả kiểm tra | Thành viên phụ trách từng tài liệu |
+| Biên bản, nguồn tình huống và hồ sơ đánh giá CP3 | Codex | Chuẩn hóa trình bày P1–P3; cập nhật thông tin được xác nhận; chuyển thể 5 tình huống có nguồn; phân tích O1/O3 và mô tả quy trình chấm | Đức đã xác nhận cả 3 người ngoài nhóm, không ghi nhận giờ và P2 bị từ chối hoàn. Câu chuyển thể và phân tích điểm chưa được ghi nhận là đã duyệt | Đức; Khoa kiểm tra khi tích hợp câu thử |
 
-**Không dùng AI để:** tạo người được phỏng vấn, trích dẫn, câu trả lời khảo sát; sửa kết quả các lượt đã chạy (`eval/run-*.csv`, `cost/simulate-*.csv`, `traces/`).
+## 3. Tài liệu liên quan
+
+- Biên bản gốc và phần làm rõ: evidence/interviews/P1.md, P2.md, P3.md.
+- Bằng chứng và các tình huống chuyển thể: evidence/summary.md.
+- Điểm hiệu chuẩn, phân tích hỗ trợ và quy trình đánh giá: eval/README.md.
+
+Giữ nguyên lời trả lời thực tế và lịch sử chấm. Không sử dụng AI để tạo người tham gia, bịa trích dẫn hoặc phản hồi khảo sát, thay output đã chạy hay điều chỉnh expected cho khớp kết quả. Mọi đề xuất chấm bằng AI cần được người phụ trách duyệt trước khi điền điểm chính thức.
