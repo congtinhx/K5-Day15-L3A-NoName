@@ -39,7 +39,18 @@ Cơ sở: lớp L3 ~700 học viên (02-guide.md mục 4.2). Giả định *(t�
 - Số lần / tháng của từng kiểu người dùng *(tự ước tính, dùng cho persona ở §8)*: ít đặt (1–3 đơn/tháng, ~0,1 lần muốn hủy/tháng) 50% · vừa (4–8 đơn/tháng, ~0,3 lần/tháng) 35% · nhiều/đặt hộ nhóm (>8 đơn/tháng, ~1 lần/tháng) 15%.
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
-- [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
+- **Luồng hủy mặc định trên app ShopeeFood (nút "Hủy đơn hàng" + Trung tâm Trợ giúp):**
+  - *Đáng học:* Chặn tự hủy theo trạng thái đơn (`cho_xac_nhan` mới cho bấm) giúp bảo vệ quán khỏi mất tiền món đã làm; có bài viết chính sách công khai về điều kiện hủy và kiểm tra hoàn tiền 1–3 ngày làm việc.
+  - *Đáng né:* Khi nút hủy bị mờ không giải thích lý do tại chỗ và không cảnh báo trước việc hủy vì đổi ý sẽ mất tiền/Xu/mã; khách phải tự tra bài viết rời rạc hoặc mở chat (23/220 = 10,5% review 1–2★ than không cho hủy / không hủy được).
+  - *Mình khác gì:* Kiểm tra trạng thái đơn bằng code (`check_cancel`) rồi trả lời đủ 1 lần: hủy được hay không kèm mã luật (`P1–P7, T1`), số tiền hoàn, thời gian kiểm tra hoàn tiền, hoặc giờ giao dự kiến nếu không hủy được.
+- **Trợ lý chat / chatbot hỗ trợ tự động trong app (Shopee / ShopeeFood):**
+  - *Đáng học:* Phản hồi tức thì 24/7 ngay trong luồng đơn hàng và có lối chuyển sang nhân viên hỗ trợ khi ca phức tạp.
+  - *Đáng né:* Trả lời khuôn mẫu lặp câu, lỗi hoặc không bám sát trạng thái từng đơn (review thật `R1-076`, `R1-090`, `R1-113` phàn nàn trợ lý tự động lỗi, lặp một câu, không hỗ trợ hủy).
+  - *Mình khác gì:* Tách bạch **code quyết định** (đọc trạng thái đơn, tính tiền hoàn, khóa dòng `QUYẾT ĐỊNH` và hậu kiểm đầu ra) với **model chỉ diễn đạt**, nên không bịa chính sách, không hứa hoàn sai luật và tạo ticket chuyển nhân viên ngay cho ca nhạy cảm (chưa hoàn quá 3 ngày, quán trễ >30 phút, ngộ độc/dị ứng).
+- **Luồng hủy đơn & Trung tâm Trợ giúp của GrabFood:**
+  - *Đáng học:* Phân nhánh rõ theo từng tình huống đơn hàng (chưa có tài xế, quán đang chuẩn bị, vấn đề hoàn tiền) giúp người dùng chọn đúng nhóm vấn đề.
+  - *Đáng né:* Khi quán đã xác nhận đơn, khách vẫn phải bấm qua nhiều tầng menu trợ giúp để mở yêu cầu và thiếu câu trả lời tức thì về số tiền/điều kiện hoàn ngay khi hỏi bằng ngôn ngữ tự nhiên.
+  - *Mình khác gì:* Sinh viên chỉ cần nhắn 1 câu tự nhiên (thiếu mã đơn thì hệ thống hỏi lại chứ không đoán), nhận ngay quyết định rõ ràng và chỉ tạo bản nháp chờ khách bấm xác nhận hủy thay vì tự thực hiện thao tác khó đảo ngược.
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
 - **Lát cắt MỘT CÂU:** Một sinh viên · yêu cầu hủy đơn ShopeeFood đã thanh toán · hệ thống quyết định **cho hủy kèm số tiền hoàn / giải thích không hủy được kèm giờ giao dự kiến / chuyển nhân viên** · sinh viên biết ngay kết quả, số tiền và thời gian hoàn.
