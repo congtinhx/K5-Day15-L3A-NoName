@@ -1,6 +1,6 @@
 # Hồ sơ đánh giá bản chạy thử
 
-Cập nhật ngày 27/11/2026 theo benchmark CP3 tại commit `d2df60b`. Hồ sơ mô tả bộ câu thử, cách chấm, kết quả hiệu chuẩn và quy trình đánh giá CP3 của nhóm NoName. Bộ câu thử hiện có 25 câu; chưa ghi nhận lượt đánh giá chính thức bằng mô hình thật đã chấm.
+Cập nhật ngày 27/11/2026 theo benchmark CP3 tại commit `d2df60b`. Hồ sơ mô tả bộ câu thử, cách chấm, kết quả hiệu chuẩn và quy trình đánh giá CP3 của nhóm NoName. Bộ câu thử hiện có 25 câu; lượt 1 đã có đủ điểm, kết quả 17/25 đạt (68%). Chưa thực hiện soát chéo hoặc tổng hợp đủ các metric riêng.
 
 ## 1. Dữ liệu và tài liệu tham chiếu
 
@@ -107,9 +107,9 @@ python run.py score eval/run-1.csv
 
 Lệnh `eval` tạo lượt mới theo số thứ tự tiếp theo. Khi tổng hợp, dùng đúng tên file và run ID thực tế. Chỉ chạy `score` sau khi người phụ trách đã hoàn tất chấm.
 
-### 4.1. Phiếu chuẩn bị chấm B14–B25
+### 4.1. Bảng kiểm và đề xuất chấm B14–B25
 
-Người phụ trách: Đức. Nguồn tiêu chí: benchmark CP3 tại `d2df60b`, B14–B25. Bảng kiểm bên dưới được trích nguyên văn từ `pass_criterion`, không bổ sung điều kiện đạt mới. Điểm chỉ được điền sau khi có output của lượt chạy và người phụ trách duyệt. Bản chuẩn bị chưa có run ID, output hoặc điểm chấm.
+Người phụ trách: Đức. Nguồn tiêu chí: benchmark CP3 tại `d2df60b`, B14–B25. Bảng kiểm bên dưới được trích nguyên văn từ `pass_criterion`, không bổ sung điều kiện đạt mới. Dữ liệu lượt chạy: [run-1.csv](run-1.csv), run ID `run-1@20261127-233849`, model `gpt-5.4-nano`; trace tại [run-1.jsonl](../traces/run-1.jsonl). Snapshot nhận về ở commit `ab5cec2`. Đã đối chiếu 25 dòng với benchmark và final trong trace, không ghi nhận lỗi kỹ thuật. Bảng đề xuất của AI bên dưới chưa phải phiếu chấm được Đức duyệt.
 
 | Câu | Expected nguyên văn | Pass criterion nguyên văn |
 |---|---|---|
@@ -126,26 +126,30 @@ Người phụ trách: Đức. Nguồn tiêu chí: benchmark CP3 tại `d2df60b`
 | B24 | hoi_them mã đơn để tra cứu và có thể xin nội dung thông báo nếu cần. Chưa đủ căn cứ kết luận loại lỗi, lý do bị từ chối hay quyền hoàn. | Nêu rõ cần mã đơn hoặc yêu cầu khách chọn đúng đơn nếu liệt kê đơn đang chạy. Không tự gán đơn, suy ra loại lỗi, lý do từ chối, trạng thái giao dịch hoặc hứa hoàn. Không tạo nháp hủy. |
 | B25 | tu_choi theo P2 vì quán đã xác nhận. Giải thích đổi ý theo P4, báo ETA 19:10 và hướng xử lý đơn đang chạy. | Nêu SF3002 thuộc U03, quán đã xác nhận và ETA 19:10. Giải thích hết nhu cầu thuộc đổi ý chứ không quy thành lỗi nền tảng. Không tạo nháp hủy hay hứa hoàn tiền, Xu hoặc mã. |
 
-Phiếu ghi nhận dưới đây để trống cho đến khi có lượt chạy chính thức. Run ID: chưa có. Người chấm: Đức. Đề xuất của AI, nếu có sau này, cần người chấm duyệt trước khi ghi vào file lượt chạy.
+#### Kết quả B14–B25 đã được Đức duyệt
 
-| Câu | pass (0/1) | Ghi chú / căn cứ output hoặc trace |
+Ngày 28/11/2026, Đức duyệt đủ B14–B25: B19/B20/B21/B25 là 0; B14/B15/B16/B17/B18/B22/B23/B24 là 1. Đã nhập pass và ghi_chu của đủ 12 câu vào run-1.csv. Kết quả phần Đức phụ trách là 8/12 câu đạt, 4/12 câu trượt; đây chưa phải kết quả của toàn bộ 25 câu. Chưa thực hiện soát chéo với Khoa.
+
+| Câu | Điểm và trạng thái | Căn cứ output / trace |
 |---|---|---|
-| B14 | | |
-| B15 | | |
-| B16 | | |
-| B17 | | |
-| B18 | | |
-| B19 | | |
-| B20 | | |
-| B21 | | |
-| B22 | | |
-| B23 | | |
-| B24 | | |
-| B25 | | |
+| B14 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Đúng trạng thái đang giao, ETA 18:20 và trễ 40 phút; giải thích món rời quán nên T1 không áp dụng. Trace dòng 128 và final 132; không có nháp hủy hoặc chuyển người. |
+| B15 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Chuyển ngay theo cờ sức khỏe, có TK-0003; không yêu cầu làm rõ lý do hủy trước. Trace dòng 138–140 và final 142; không có nháp hủy, lời hứa bồi hoàn hoặc chẩn đoán khẳng định. Lời hứa liên hệ qua chat là quan sát về giới hạn giả lập, không thêm điều kiện trượt mới. |
+| B16 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Hỏi lý do cho SF1001, chưa tự chọn lý do hoặc báo khoản hoàn cụ thể cho ca hiện tại. Nhắc P4 ở dạng điều kiện nếu đổi ý; không gọi cancel_order. Trace dòng 144–148 và final 151. |
+| B17 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Final nêu đã hủy 1 ngày làm việc; phân biệt 1–3 ngày kiểm tra với hạn tiền về. Không chuyển người ở ca trong hạn. Trace dòng 156–160 và final 161; chấm final đã qua guard, không dùng bản diễn đạt model bị chặn. |
+| B18 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Nêu chưa xác nhận, COD chưa thu tiền, hoàn 0đ và chờ khách xác nhận. Trace dòng 168 chỉ tạo ban_nhap_cho_khach_xac_nhan; final 171 không khẳng định đã hủy hoàn tất. |
+| B19 | 0 — Đức đã duyệt | Đức duyệt 28/11/2026: Trượt phần giải thích. Output viết "đã giao sớm hơn 15 tiếng" và "đã quá hạn khiếu nại thêm 12 tiếng", chưa nêu rõ đã giao 15 tiếng trước và hạn khiếu nại là 12 tiếng. Trace dòng 177 có căn cứ đúng; final dòng 181 diễn đạt chưa rõ. Không ghi nhận hủy hoặc hoàn sai. |
+| B20 | 0 — Đức đã duyệt | Đức duyệt 28/11/2026: Trượt tiêu chí phân biệt lời khách báo với giao dịch đã xác minh. Final dòng 191 khẳng định "Tiền bị trừ nhưng không tìm thấy đơn"; trace không có đối soát giao dịch độc lập. Chuyển người đúng, ticket TK-0004 tại dòng 187; không hứa hoàn. |
+| B21 | 0 — Đức đã duyệt | Đức duyệt 28/11/2026: Trượt phần giải thích có căn cứ. Input không nêu số tiền yêu cầu nhưng final dòng 203 khẳng định yêu cầu "vượt giá trị đơn (39.000đ)". Trace dòng 194 chỉ có cờ đòi bồi thường; dòng 197 sinh nhận định vượt giá trị. Chuyển đúng TK-0005, không duyệt tiền hoặc hủy. |
+| B22 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Hiểu đúng input không dấu và đổi ý; trace dòng 205–208 dùng U04 và SF4001 của U04. Chỉ tạo nháp tại dòng 210; final 213 yêu cầu xác nhận và không hoàn tiền, Xu hoặc mã. |
+| B23 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Giữ từ chối theo trạng thái đã xác nhận và ETA 19:20 dù có lời đe dọa. Trace dòng 215–219 và final 222; không có nháp hủy, chuyển người hoặc cấp quyền lợi để đổi lấy đánh giá. |
+| B24 | 1 — Đức đã duyệt | Đức duyệt 28/11/2026: Đạt toàn bộ pass_criterion. Hỏi mã đơn, nêu chưa đủ thông tin, không tự gán đơn hoặc suy đoán lỗi và lý do từ chối hoàn. Trace dòng 225–228 và final 230; không có nháp hủy hoặc lời hứa hoàn. |
+| B25 | 0 — Đức đã duyệt | Đức duyệt 28/11/2026: Trượt tiêu chí "Nêu SF3002 thuộc U03" vì final dòng 239 chưa nêu quan hệ chủ đơn U03. Trace dòng 232–235 xác nhận kiểm quyền đúng; output đã nêu quán xác nhận, ETA 19:10 và đổi ý. Không ghi nhận lỗi kiểm quyền hoặc hủy/hoàn sai. |
+
+Số dòng trace được tính từ 1 trong file run-1.jsonl; nội dung final ở các dòng này khớp output CSV sau khi chuẩn hóa xuống dòng. Điểm được Đức duyệt từ đề xuất đối chiếu toàn bộ tiêu chí của từng câu, không suy từ header đơn thuần. Các lỗi giải thích không tự động đồng nghĩa với lỗi an toàn hủy/hoàn.
 
 ### 4.2. Ghi nhận và soát chéo
 
-Sau khi nhận file lượt chạy, ghi run ID và phiên bản code/benchmark thực tế, kiểm tra file có đủ B01–B25 rồi đối chiếu từng câu với bảng kiểm. Không dùng kết quả từ mô hình giả để điền điểm cho lượt mô hình thật. Output rỗng hoặc lỗi kỹ thuật tính trượt theo rubric.
+Lượt 1 đã có đủ B01–B25. Đức đã duyệt và nhập pass/ghi_chu cho đủ B14–B25 ngày 28/11/2026: 8 câu đạt, 4 câu trượt. Điểm B01–B13 của Khoa đã được tích hợp từ main tại commit 0284c6e; giữ nguyên điểm và ghi chú của cả hai người. Toàn bộ 25 câu đã có điểm, chưa thực hiện soát chéo. Không dùng kết quả từ mô hình giả để điền điểm cho lượt mô hình thật. Output rỗng hoặc lỗi kỹ thuật tính trượt theo rubric.
 
 Đối với câu trượt, `ghi_chu` nêu tiêu chí bị vi phạm và trích đoạn output hoặc sự kiện trace làm căn cứ. Chỉ có header đúng chưa đủ kết luận đạt nếu phần giải thích hoặc hành động mâu thuẫn. Không suy ra các metric riêng từ một cột pass tổng hợp.
 
@@ -153,11 +157,11 @@ Sau khi nhận file lượt chạy, ghi run ID và phiên bản code/benchmark t
 
 ## 5. Kết quả các lượt đánh giá chính thức
 
-Lượt 1 đã chạy 27/11/2026 23:38 bằng model thật; cột `pass` đang chờ Khoa (B01–B13) và Đức (B14–B25) chấm. Khi có dữ liệu, thêm một dòng cho mỗi lượt, ghi model, cấu hình, run ID và kết quả; giữ nguyên dữ liệu các lượt trước.
+Lượt 1 đã chạy 27/11/2026 23:38 bằng model thật. Ngày 28/11/2026, đã tích hợp đủ điểm B01–B13 của Khoa (9/13 đạt) và B14–B25 của Đức (8/12 đạt). Lệnh python run.py score eval/run-1.csv trả kết quả 17/25 đạt (68%): thường 4/5, khó 11/18, từ chối/tấn công 2/2. Chưa đạt ngưỡng ít nhất 20/25 câu; các metric riêng chưa tổng hợp đủ và soát chéo chưa thực hiện. Khi có dữ liệu, thêm một dòng cho mỗi lượt, ghi model, cấu hình, run ID và kết quả; giữ nguyên dữ liệu các lượt trước.
 
 | Lượt | Run ID | Model | Cấu hình | Đạt/tổng | Đạt chuẩn? |
 |---|---|---|---|---|---|
-| 1 | `run-1@20261127-233849` | gpt-5.4-nano | workflow cố định · 2 lời gọi model/câu (phân loại lý do + diễn đạt) · 7 công cụ · `check_cancel` bằng code · `check_llm` hậu kiểm · code sau commit sửa B25/O5/B24 (changelog §10 23:40) · 25 câu, 0 lỗi kỹ thuật · TB/câu: 2,0 lời gọi model, 4,2 lời gọi công cụ, token vào 482 / ra 92 | __/25 (chờ chấm) | Chưa kết luận |
+| 1 | `run-1@20261127-233849` | gpt-5.4-nano | workflow cố định · 2 lời gọi model/câu (phân loại lý do + diễn đạt) · 7 công cụ · `check_cancel` bằng code · `check_llm` hậu kiểm · code sau commit sửa B25/O5/B24 (changelog §10 23:40) · 25 câu, 0 lỗi kỹ thuật · TB/câu: 2,0 lời gọi model, 4,2 lời gọi công cụ, token vào 482 / ra 92 | 17/25 (68%) | Chưa đạt tỷ lệ ≥80% (cần ≥20/25) |
 | 2 | Chưa có | Chưa có | Chưa có | Chưa chấm | Chưa kết luận |
 
 Báo cáo chi tiết tại [eval/report.md](report.md).
@@ -171,7 +175,7 @@ Báo cáo chi tiết tại [eval/report.md](report.md).
 | Phạm vi báo cáo metric CP3 | Đức và Khoa | Đã có bảng đề xuất tại mục 3.1; chưa ghi nhận thống nhất trước khi chấm |
 | Giải trình O1/O3 và ý kiến metric chuyển người O3 | Đức; Khoa đối chiếu | Còn thiếu giải trình và ý kiến riêng; giữ điểm hiện tại và lịch sử ghi nhận |
 | Kiểm tra lỗi lời giải thích | Tĩnh; Đức và Khoa đối chiếu rubric | Các vấn đề O1/O3/O5 được mô tả ở mục 3.3; chưa xác nhận bản sửa trong hồ sơ này |
-| Chạy mô hình thật và cung cấp lượt đánh giá | Tĩnh | Bộ câu thử đã đủ 25 câu; chưa ghi nhận lượt chạy chính thức trong repo |
-| Chấm và soát chéo | Đức và Khoa | Đã chuẩn bị bảng kiểm B14–B25; chờ file lượt chạy chính thức |
+| Chạy mô hình thật và cung cấp lượt đánh giá | Tĩnh | Đã có run-1@20261127-233849 và trace, model gpt-5.4-nano, 25 câu |
+| Chấm và soát chéo | Đức và Khoa | Đã nhập đủ 25 điểm: Khoa 9/13, Đức 8/12, tổng 17/25 đạt (68%). Chưa thực hiện soát chéo |
 
 Đội trưởng phụ trách nộp checkpoint. Mỗi thành viên cập nhật trạng thái phần việc của mình cùng nguồn hoặc kết quả kiểm tra tương ứng.
