@@ -79,10 +79,17 @@ flowchart TD
   | `escalate_to_human` (giả lập) | order_id, lý do | mã ticket TK-xxxx | Có, đảo ngược được |
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Cho hủy sai thì quán mất tiền món đã làm, từ chối sai thì khách mất tiền và niềm tin. Vì vậy hệ thống chỉ tự quyết khi luật trạng thái rõ (P1, P2, P4, P7). Các ca liên quan đến tiền đã bị trừ, đòi vượt giá trị đơn, trễ > 30 phút hoặc sức khỏe thì chuyển người. Kể cả khi cho hủy, khách vẫn là người bấm xác nhận cuối.
-- **Chỗ chặn rủi ro:** Rủi ro lớn nhất là hoàn sai tiền hoặc hứa hoàn khi luật không cho (ca đổi ý, ca P2). Chặn bằng 3 lớp:
+- **Cách đọc luật (đã rà theo audit 27/11):**
+  - **P1 + P2:** P1 cho hủy khi "quán chưa xác nhận *hoặc* chưa có tài xế". P2 chặn hủy khi "quán đã xác nhận *hoặc* tài xế đang giao". Đọc hai luật cùng nhau, hệ thống chỉ cho hủy khi **cả hai việc chưa xảy ra** (trạng thái `cho_xac_nhan`), để không mâu thuẫn với P2.
+  - **P5:** hệ thống chỉ nói "ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn về phương thức gốc", không cam kết tiền về trong 1–3 ngày.
+  - **T1 (tự đặt):** chỉ áp khi món còn ở quán (`quan_da_xac_nhan`, `tai_xe_da_nhan`). Đơn đang giao thì không áp.
+  - **Thiếu mã đơn:** luôn hỏi thêm, không tự chọn đơn, kể cả khi khách chỉ có 1 đơn đang chạy.
+  - **Sức khỏe:** chuyển nhân viên ngay, không hỏi chọn đơn trước.
+- **Chỗ chặn rủi ro:** Rủi ro lớn nhất là hoàn sai tiền hoặc hứa hoàn khi luật không cho (ca đổi ý, ca P2). Chặn bằng 4 lớp:
   1. Số tiền và quyết định chỉ do `check_cancel` (code) tính.
-  2. Dòng đầu `QUYẾT ĐỊNH: … · Hoàn: …` do code in, model không sửa được.
+  2. Dòng đầu `QUYẾT ĐỊNH: … · Số tiền được hoàn: …` do code in, model không sửa được.
   3. Prompt viết câu trả lời cấm thêm số tiền, voucher, chính sách.
+  4. **Code kiểm lại chữ model viết** (`check_llm` trong `agent.py`). Nếu có số tiền không có trong bản nháp, có cụm cấm (voucher, bồi thường, cam kết, hoàn ngay…), nói như một quyết định khác, hoặc hứa hoàn tiền khi luật không hoàn, thì bỏ chữ model và dùng bản nháp code. Lần chặn được ghi vào trace.
   
   Câu tấn công ("bỏ qua quy định", tự xưng nhân viên) được bắt bằng từ khóa trong code trước khi tới model.
 - **Chỗ người duyệt:**
@@ -99,7 +106,7 @@ flowchart TD
   | An toàn trước hết | Cờ ngộ độc/dị ứng được kiểm đầu tiên → chuyển ngay, kèm hướng dẫn đi y tế. Lời đe dọa (1 sao, bóc phốt) không đổi quyết định. |
 
 - **Phần còn giả:**
-  - Data đơn hàng và khách hàng: 13 đơn, 4 khách, **giả lập** (`data/make_orders.py`, seed 15, nhãn `synthetic`).
+  - Data đơn hàng và khách hàng: 14 đơn, 4 khách, **giả lập** (`data/make_orders.py`, seed 15, nhãn `synthetic`).
   - Giờ "hiện tại" của sandbox cố định ở 19:00 27/11/2026.
   - `cancel_order` và `escalate_to_human` là giả lập; mã ticket là số đếm.
   - Khách đang đăng nhập mặc định là U01; câu thử đổi khách bằng tiền tố `[U03]`.

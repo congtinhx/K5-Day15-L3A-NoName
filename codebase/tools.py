@@ -5,14 +5,18 @@ Dữ liệu đọc từ data/orders.json, data/users.json (GIẢ LẬP, seed 15 
 Công cụ có tác động ra ngoài (cancel_order, escalate_to_human) KHÔNG làm thật: chỉ tạo bản nháp / ticket giả.
 
 Luật (spec.md §4, nguồn: Trung tâm Trợ giúp ShopeeFood, xem 27/11/2026):
-  P1 tự hủy được khi quán chưa xác nhận và chưa có tài xế (trạng thái cho_xac_nhan)
+  P1 tự hủy được khi quán chưa xác nhận làm món hoặc chưa có tài xế nhận đơn.
+     Đọc cùng P2 (nút hủy mờ khi quán ĐÃ xác nhận HOẶC tài xế đang giao): nếu một trong hai việc đã xảy ra
+     thì P2 chặn. Vì vậy chỉ hủy được khi CẢ HAI chưa xảy ra = trạng thái cho_xac_nhan. Đây là cách nhóm
+     ghép P1+P2 để không mâu thuẫn — xem spec.md §4.
   P2 quán đã xác nhận / tài xế đã nhận / đang giao → không hủy được, đề nghị tiếp tục đơn
   P3 quán làm món lâu → đề nghị chờ thêm
   P4 hủy vì đổi ý → không hoàn tiền, Shopee Xu, mã khuyến mãi
   P5 tiền đã trừ mà đơn chưa hoàn thành → kiểm tra 1–3 ngày làm việc, hoàn về phương thức gốc
   P6 hủy quá 2 đơn không lý do chính đáng → khóa tài khoản vĩnh viễn
   P7 khiếu nại đơn chỉ nhận trong 12 tiếng
-  T1 (TỰ ĐẶT) quán trễ > 30 phút so với giờ dự kiến → chuyển nhân viên xem xét cho hủy
+  T1 (TỰ ĐẶT) quán trễ > 30 phút so với giờ dự kiến → chuyển nhân viên xem xét cho hủy.
+     Chỉ áp khi món còn ở quán (quan_da_xac_nhan, tai_xe_da_nhan); đang giao thì không áp.
 """
 import datetime as dt
 import itertools
@@ -34,14 +38,15 @@ POLICY = {
     "P2": "Quán đã xác nhận/chuẩn bị món hoặc tài xế đang giao thì không hủy được; ShopeeFood đề nghị khách tiếp tục đơn.",
     "P3": "Quán làm món lâu thì ShopeeFood đề nghị khách chờ thêm.",
     "P4": "Hủy vì đổi ý (đổi món, thời gian, thông tin) thì không được hoàn tiền, Shopee Xu và mã khuyến mãi.",
-    "P5": "Đơn đã trừ tiền mà chưa hoàn thành: ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc và hoàn về phương thức thanh toán ban đầu.",
+    "P5": "Đơn đã trừ tiền mà chưa hoàn thành: ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc và hoàn về phương thức thanh toán ban đầu (không cam kết tiền về trong 1–3 ngày).",
     "P6": "Hủy quá 2 đơn không có lý do chính đáng có thể bị khóa tài khoản vĩnh viễn.",
     "P7": "Khiếu nại về đơn hàng chỉ được tiếp nhận trong 12 tiếng.",
-    "T1": "(Quy định tự đặt của nhóm) Quán trễ hơn 30 phút so với giờ dự kiến thì chuyển nhân viên xem xét cho hủy.",
+    "T1": "(Quy định tự đặt của nhóm) Quán trễ hơn 30 phút so với giờ dự kiến, món còn ở quán, thì chuyển nhân viên xem xét cho hủy.",
 }
 
 ACTIVE = {"cho_xac_nhan", "quan_da_xac_nhan", "tai_xe_da_nhan", "dang_giao"}
 BLOCKED = {"quan_da_xac_nhan", "tai_xe_da_nhan", "dang_giao"}
+AT_SHOP = {"quan_da_xac_nhan", "tai_xe_da_nhan"}   # T1 chỉ áp khi món còn ở quán
 PREPAID = {"shopeepay", "the"}
 _ticket = itertools.count(1)
 
@@ -181,7 +186,7 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
     if status in BLOCKED:
         eta = _t(order["gio_du_kien"])
         late = (t_now - eta).total_seconds() / 60
-        if late > LATE_MIN:
+        if late > LATE_MIN and status in AT_SHOP:
             return out("chuyen_nguoi", "Đơn trễ %d phút so với giờ dự kiến (> %d phút)." % (late, LATE_MIN), ["T1", "P2"])
         luat = ["P2"] + (["P3"] if reason == "cho_lau" else []) + (["P4"] if reason == "doi_y" else [])
         return out("tu_choi", "Quán đã xác nhận hoặc tài xế đã nhận đơn nên không hủy được.", luat,

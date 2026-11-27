@@ -193,6 +193,20 @@
       "ma_khuyen_mai": "FREESHIPMAU",
       "kich_ban": "đơn của người khác",
       "label": "synthetic"
+    },
+    "SF1010": {
+      "order_id": "SF1010",
+      "user_id": "U01",
+      "quan": "Quán Mẫu 10",
+      "trang_thai": "dang_giao",
+      "gio_dat": "2026-11-27T17:40",
+      "gio_du_kien": "2026-11-27T18:20",
+      "tong_tien": 39000,
+      "thanh_toan": "shopeepay",
+      "xu_da_dung": 1000,
+      "ma_khuyen_mai": null,
+      "kich_ban": "T1 không áp: đang giao, trễ 40 phút",
+      "label": "synthetic"
     }
   }
 }

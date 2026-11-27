@@ -1,4 +1,4 @@
-# 5 output để chấm chéo (CP2)
+# 5 output để chấm chéo (CP2) — bản sau audit 17:50
 
 > Sinh bằng `codebase/agent.py`, **chế độ model giả**, data giả lập (seed 15), lúc 27/11/2026. Đức và Khoa chấm **độc lập** theo `eval/metric_spec.yaml`, ghi kết quả vào `eval/README.md` mục 3. Cần khớp ≥ 4/5.
 
@@ -7,9 +7,9 @@
 **Input:** Hủy giúp mình đơn SF1001, chờ lâu quá
 
 ```
-QUYẾT ĐỊNH: CHO HỦY (chờ bạn xác nhận) · Đơn SF1001 · Hoàn: 88.000đ · Căn cứ: P1, P5
+QUYẾT ĐỊNH: CHO HỦY (chờ bạn xác nhận) · Đơn SF1001 · Số tiền được hoàn: 88.000đ · Căn cứ: P1, P5
 Đơn chưa được quán xác nhận nên hủy được.
-Số tiền 88.000đ sẽ được hoàn về ví ShopeePay trong 1–3 ngày làm việc sau khi hủy.
+Sau khi hủy, ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn 88.000đ về ví ShopeePay (phương thức thanh toán ban đầu).
 Shopee Xu và mã khuyến mãi: hệ thống chưa có quy định công khai để hứa trước.
 Mình đã tạo yêu cầu hủy, bạn bấm Xác nhận hủy để hoàn tất (hệ thống không tự hủy thay bạn).
 ```

@@ -123,7 +123,7 @@ def header(d, order, extra):
     if order:
         parts.append("Đơn %s" % order["order_id"])
     if d["quyet_dinh"] == "cho_huy":
-        parts.append("Hoàn: %s" % tools.vnd(d["hoan_tien"]))
+        parts.append("Số tiền được hoàn: %s" % tools.vnd(d["hoan_tien"]))
     if d.get("du_kien"):
         parts.append("Giao dự kiến: %s" % d["du_kien"])
     if extra.get("ticket"):
@@ -137,7 +137,10 @@ def template_body(d, order, flags, extra):
     """Lời giải thích dựng bằng code — dùng khi chế độ giả, và làm khung cho model."""
     q, lines = d["quyet_dinh"], []
     if q == "hoi_them":
-        if extra.get("don_dang_chay"):
+        if len(extra.get("don_dang_chay") or []) == 1:
+            lines.append("Bạn muốn hủy đơn %s phải không? Bạn gửi lại mã đơn và lý do hủy để mình kiểm tra nhé."
+                         % extra["don_dang_chay"][0])
+        elif extra.get("don_dang_chay"):
             lines.append("Bạn đang có %d đơn: %s. Bạn muốn hủy đơn nào?" %
                          (len(extra["don_dang_chay"]), ", ".join(extra["don_dang_chay"])))
         elif not order:
@@ -148,8 +151,8 @@ def template_body(d, order, flags, extra):
     elif q == "cho_huy":
         lines.append(d["ly_do"])
         if d["hoan_tien"]:
-            lines.append("Số tiền %s sẽ được hoàn về %s trong 1–3 ngày làm việc sau khi hủy."
-                         % (tools.vnd(d["hoan_tien"]), PAY[order["thanh_toan"]]))
+            lines.append("Sau khi hủy, ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn %s về %s "
+                         "(phương thức thanh toán ban đầu)." % (tools.vnd(d["hoan_tien"]), PAY[order["thanh_toan"]]))
             lines.append("Shopee Xu và mã khuyến mãi: hệ thống chưa có quy định công khai để hứa trước.")
         elif order["thanh_toan"] == "tien_mat":
             lines.append("Đơn trả tiền mặt nên bạn chưa bị trừ tiền, không có khoản cần hoàn.")
@@ -173,7 +176,8 @@ def template_body(d, order, flags, extra):
     elif q == "thong_tin":
         lines.append(d["ly_do"])
         if order and order.get("thanh_toan") in tools.PREPAID:
-            lines.append("Tiền sẽ hoàn về %s. Nếu quá 3 ngày làm việc vẫn chưa nhận, nhắn lại để mình chuyển nhân viên."
+            lines.append("ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn về %s. "
+                         "Nếu quá 3 ngày làm việc vẫn chưa nhận, nhắn lại để mình chuyển nhân viên."
                          % PAY[order["thanh_toan"]])
     if flags.get("de_doa") and q != "chuyen_nguoi":
         lines.append("Mình hiểu bạn đang bực; quyết định vẫn theo quy định ở trên.")
@@ -189,12 +193,49 @@ WRITE_SYSTEM = (
 )
 
 
-def write_reply(head, body, text):
+FORBIDDEN = [r"voucher", r"boi thuong", r"den bu", r"hoan 100", r"hoan ngay", r"trong ngay", r"ngay lap tuc",
+             r"cam ket", r"chac chan (se )?(duoc )?hoan", r"da huy (don )?thanh cong", r"da hoan"]
+DECISION_WORDS = {  # cụm từ chỉ được xuất hiện khi quyết định khớp
+    "cho_huy": [r"(cho|duoc|co the) huy", r"huy duoc"],
+    "chuyen_nguoi": [r"chuyen (cho )?nhan vien", r"nhan vien (se )?lien he"],
+}
+
+
+def amounts(p):
+    return {int(x.replace(".", "").replace(",", "")) for x in re.findall(r"(\d{1,3}(?:[.,]\d{3})+|\d{4,})\s*d\b", p)}
+
+
+def check_llm(llm, body, d):
+    """Kiểm lại chữ model viết so với khung code. Trả danh sách vi phạm (rỗng = an toàn)."""
+    p, b = plain(llm), plain(body)
+    bad = []
+    extra_money = amounts(p) - amounts(b)
+    if extra_money:
+        bad.append("số tiền lạ %s" % sorted(extra_money))
+    for pat in FORBIDDEN:
+        if re.search(pat, p) and not re.search(pat, b):
+            bad.append("cụm cấm '%s'" % pat)
+    for q, pats in DECISION_WORDS.items():
+        if q != d["quyet_dinh"]:
+            for pat in pats:
+                if re.search(r"(?<!khong )(?<!chua )" + pat, p) and not re.search(pat, b):
+                    bad.append("nói như quyết định %s" % q)
+    if d["quyet_dinh"] == "cho_huy" and d["hoan_tien"] == 0 and re.search(r"(se|duoc) hoan (lai )?(tien|\d)", p):
+        bad.append("hứa hoàn tiền khi luật không hoàn")
+    return bad
+
+
+def write_reply(head, body, text, d):
     if MODEL_PROVIDER == "fake":
         return body
     r = call_model(WRITE_SYSTEM, "Tin nhắn khách:\n%s\n\nQuyết định (không được đổi):\n%s\n\nBản nháp:\n%s"
                    % (text, head, body))
-    return r["text"].strip() or body
+    llm = r["text"].strip()
+    bad = check_llm(llm, body, d) if llm else ["rỗng"]
+    if bad:
+        note("chặn chữ model, dùng bản nháp code: %s" % "; ".join(bad))
+        return body
+    return llm
 
 
 # ----------------------------------------------------------------- luồng chính
@@ -207,19 +248,19 @@ def answer(text: str) -> dict:
                                                     {k: v for k, v in flags.items() if v}))
     extra, order = {}, {}
 
+    # Sức khỏe / tấn công: quyết định ngay, không hỏi chọn đơn trước (Codex #4)
+    urgent = flags["suc_khoe"] or flags["tan_cong"] or flags["tu_xung_nhan_vien"] or reason == "tru_tien_khong_don"
     if len(ids) == 1:
         order = tools.get_order(ids[0])
-    elif len(ids) > 1:
+    elif len(ids) > 1 and not urgent:
         extra["don_dang_chay"] = ids
-    elif not (flags["suc_khoe"] or flags["tan_cong"] or flags["tu_xung_nhan_vien"] or reason == "tru_tien_khong_don"):
-        active = tools.list_active_orders(user_id)
-        extra["don_dang_chay"] = active if len(active) > 1 else []
-        if len(active) == 1:
-            order = tools.get_order(active[0])
-            note("khách không nêu mã, chỉ có 1 đơn đang chạy → dùng %s" % active[0])
+    elif not ids and not urgent:
+        # Thiếu mã đơn → luôn hỏi thêm, KHÔNG tự chọn đơn (Codex #5); chỉ liệt kê đơn đang chạy để khách chọn
+        extra["don_dang_chay"] = tools.list_active_orders(user_id)
+        extra["thieu_ma"] = True
 
     history = tools.get_cancel_history(user_id)
-    if extra.get("don_dang_chay") and not order:
+    if (extra.get("don_dang_chay") or extra.get("thieu_ma")) and not order:
         d = {"quyet_dinh": "hoi_them", "hoan_tien": 0, "luat": [], "ly_do": "", "canh_bao": [], "du_kien": None}
     else:
         d = tools.check_cancel(order, user_id, reason, flags, history, tools.now().isoformat())
@@ -234,4 +275,4 @@ def answer(text: str) -> dict:
 
     head = header(d, order, extra)
     body = template_body(d, order, flags, extra)
-    return {"output": head + "\n" + write_reply(head, body, msg)}
+    return {"output": head + "\n" + write_reply(head, body, msg, d)}

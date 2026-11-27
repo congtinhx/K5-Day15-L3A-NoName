@@ -42,6 +42,7 @@ SPEC = [
     ("SF3001", "U03", "cho_xac_nhan", "2026-11-27T18:45", "2026-11-27T19:20", "shopeepay", {}, "2 đơn đang chạy (1)"),
     ("SF3002", "U03", "quan_da_xac_nhan", "2026-11-27T18:30", "2026-11-27T19:10", "shopeepay", {}, "2 đơn đang chạy (2)"),
     ("SF4001", "U04", "cho_xac_nhan", "2026-11-27T18:50", "2026-11-27T19:30", "shopeepay", {}, "đơn của người khác"),
+    ("SF1010", "U01", "dang_giao", "2026-11-27T17:40", "2026-11-27T18:20", "shopeepay", {}, "T1 không áp: đang giao, trễ 40 phút"),
 ]
 
 orders = {}
