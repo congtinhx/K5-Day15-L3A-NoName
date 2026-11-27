@@ -1,4 +1,4 @@
-# AI SPEC — Yêu cầu hủy đơn ShopeeFood đã thanh toán · Nhóm NoName · Phòng [XXX] · Zone [X]
+# AI SPEC — Yêu cầu hủy đơn ShopeeFood đã thanh toán · Nhóm NoName · Phòng H209 · Zone 3
 
 > Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
 > Đầu mỗi mục ghi bước guide (`02-guide.md` trong repo đề) chỉ cách điền. Mỗi mục ngắn, có số và nguồn; chi tiết để ở file được trỏ tới. Xoá dòng hướng dẫn trong ngoặc vuông khi điền xong.
