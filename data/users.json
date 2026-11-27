@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "seed": 15,
+    "now": "2026-11-27T19:00",
+    "label": "synthetic",
+    "version": "v1 · 27/11/2026"
+  },
+  "users": {
+    "U01": {
+      "ten": "Khách Mẫu 1",
+      "so_don_huy_khong_ly_do_30_ngay": 0,
+      "label": "synthetic"
+    },
+    "U02": {
+      "ten": "Khách Mẫu 2",
+      "so_don_huy_khong_ly_do_30_ngay": 2,
+      "label": "synthetic"
+    },
+    "U03": {
+      "ten": "Khách Mẫu 3",
+      "so_don_huy_khong_ly_do_30_ngay": 0,
+      "label": "synthetic"
+    },
+    "U04": {
+      "ten": "Khách Mẫu 4",
+      "so_don_huy_khong_ly_do_30_ngay": 1,
+      "label": "synthetic"
+    }
+  }
+}

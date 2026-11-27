@@ -42,28 +42,70 @@ Cơ sở: lớp L3 ~700 học viên (02-guide.md mục 4.2). Giả định *(t�
 - [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả):
+- **Lát cắt MỘT CÂU:** Một sinh viên · yêu cầu hủy đơn ShopeeFood đã thanh toán · hệ thống quyết định **cho hủy kèm số tiền hoàn / giải thích không hủy được kèm giờ giao dự kiến / chuyển nhân viên** · sinh viên biết ngay kết quả, số tiền và thời gian hoàn.
 - Không làm (≥3 điều):
-- **Sơ đồ** (ảnh / Mermaid / draw.io): [chèn ở đây]
-- **Hình dạng:** [ ] workflow cố định · [ ] một agent · [ ] nhiều agent — 2 dòng lý do, và vì sao **không** chọn hình dạng phức tạp hơn:
-- **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
+  1. Không bấm hủy hay hoàn tiền thật. `cancel_order` chỉ tạo bản nháp chờ khách bấm xác nhận, sandbox dùng data giả lập.
+  2. Không tự quyết bồi thường, voucher, hoàn phí ship hay số tiền vượt giá trị đơn: các ca này chuyển nhân viên.
+  3. Không xử lý khiếu nại chất lượng món, thiếu món, tài xế (đơn đã giao): chỉ báo hạn khiếu nại 12 tiếng (P7).
+  4. Không thao tác đơn của tài khoản khác, không đọc dữ liệu cá nhân thật.
+- **Sơ đồ:**
+
+```mermaid
+flowchart TD
+    A[Tin nhắn khách] --> B["Trích thông tin<br/>code: mã đơn (regex), cờ an toàn (từ khóa)<br/>model: phân loại lý do (fallback từ khóa)"]
+    B --> C{"Cờ sức khỏe?<br/>(ngộ độc / dị ứng)"}
+    C -- có --> H[escalate_to_human<br/>chuyển ngay]
+    C -- không --> D["get_order · list_active_orders<br/>get_cancel_history (chỉ đọc)"]
+    D --> E["check_cancel — CODE áp luật P1–P7, T1<br/>tính số tiền hoàn"]
+    E -- cho_huy --> F["cancel_order (giả lập)<br/>bản nháp chờ KHÁCH xác nhận"]
+    E -- chuyen_nguoi --> H
+    E -- tu_choi / hoi_them / thong_tin --> G
+    F --> G["Dòng QUYẾT ĐỊNH do code in<br/>+ model viết lời giải thích trong khung"]
+    H --> G
+    G --> I[Trả lời khách]
+```
+
+- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent — Chỉ có một quyết định trung tâm (hủy / không / hỏi / chuyển), luật trạng thái rõ và kiểm được bằng code, nên đường đi không cần thay đổi theo input. Agent tự chọn bước sẽ đắt hơn, khó đo hơn và có thể tự gọi `cancel_order` sai lúc. Lát cắt này không cần nhiều bước suy luận.
+- **AI dựa vào đâu** (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  |  |  |  |  |
+  | `get_order` | order_id | trạng thái (cho_xac_nhan / quan_da_xac_nhan / tai_xe_da_nhan / dang_giao / da_giao / da_huy), giờ đặt, giờ dự kiến, tổng tiền, thanh toán, Xu, mã KM | Không (chỉ đọc) |
+  | `list_active_orders` | user_id | mã các đơn đang chạy (khi khách không nêu mã) | Không |
+  | `get_cancel_history` | user_id | số đơn đã hủy không lý do / 30 ngày | Không |
+  | `get_policy` | mã luật | nội dung P1–P7, T1 | Không |
+  | `check_cancel` (code) | đơn, lý do, cờ, lịch sử, giờ hiện tại | cho_huy / tu_choi / hoi_them / chuyen_nguoi / thong_tin + số tiền hoàn + mã luật | Không |
+  | `cancel_order` (giả lập) | order_id | bản nháp "chờ khách xác nhận" | **Có**, khó đảo ngược → chỉ tạo nháp |
+  | `escalate_to_human` (giả lập) | order_id, lý do | mã ticket TK-xxxx | Có, đảo ngược được |
 
-- **Mức tự động:** [ ] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — lý do (sai thì ai chịu gì, sửa đắt hay rẻ):
-- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì):
-- **Chỗ người duyệt** (việc AI không được tự làm):
-- **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
+- **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Cho hủy sai thì quán mất tiền món đã làm, từ chối sai thì khách mất tiền và niềm tin. Vì vậy hệ thống chỉ tự quyết khi luật trạng thái rõ (P1, P2, P4, P7). Các ca liên quan đến tiền đã bị trừ, đòi vượt giá trị đơn, trễ > 30 phút hoặc sức khỏe thì chuyển người. Kể cả khi cho hủy, khách vẫn là người bấm xác nhận cuối.
+- **Chỗ chặn rủi ro:** Rủi ro lớn nhất là hoàn sai tiền hoặc hứa hoàn khi luật không cho (ca đổi ý, ca P2). Chặn bằng 3 lớp:
+  1. Số tiền và quyết định chỉ do `check_cancel` (code) tính.
+  2. Dòng đầu `QUYẾT ĐỊNH: … · Hoàn: …` do code in, model không sửa được.
+  3. Prompt viết câu trả lời cấm thêm số tiền, voucher, chính sách.
+  
+  Câu tấn công ("bỏ qua quy định", tự xưng nhân viên) được bắt bằng từ khóa trong code trước khi tới model.
+- **Chỗ người duyệt:**
+  - Khách tự bấm xác nhận hủy.
+  - Nhân viên xử lý: tiền đã trừ mà đơn đã hủy quá 3 ngày làm việc chưa hoàn; trừ tiền không có đơn; đòi tiền hoặc bồi thường vượt giá trị đơn; quán trễ > 30 phút (T1); ngộ độc hoặc dị ứng.
+- **Nguyên tắc thiết kế:**
 
   | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
   |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc |  |
-  |  |  |
-  |  |  |
+  | G10 — thu hẹp phạm vi khi không chắc | Thiếu mã đơn, có ≥2 đơn đang chạy hoặc thiếu lý do → `hoi_them` (không đoán). Ca tiền/bồi thường không rõ → `chuyen_nguoi`. Lý do model và từ khóa lệch nhau được ghi `note` vào trace. |
+  | Code quyết, model chỉ diễn đạt | `check_cancel` tính tiền và trạng thái; `header()` trong `agent.py` in dòng QUYẾT ĐỊNH; model chỉ viết phần giải thích. |
+  | Việc khó đảo ngược phải có người bấm | `cancel_order` trả `ban_nhap_cho_khach_xac_nhan`, không hủy thật. |
+  | Minh bạch căn cứ | Mỗi câu trả lời ghi `Căn cứ: P1, P5…`, trỏ về luật ở `tools.POLICY` (nguồn: Trung tâm Trợ giúp ShopeeFood, xem 27/11/2026). |
+  | An toàn trước hết | Cờ ngộ độc/dị ứng được kiểm đầu tiên → chuyển ngay, kèm hướng dẫn đi y tế. Lời đe dọa (1 sao, bóc phốt) không đổi quyết định. |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật:
+- **Phần còn giả:**
+  - Data đơn hàng và khách hàng: 13 đơn, 4 khách, **giả lập** (`data/make_orders.py`, seed 15, nhãn `synthetic`).
+  - Giờ "hiện tại" của sandbox cố định ở 19:00 27/11/2026.
+  - `cancel_order` và `escalate_to_human` là giả lập; mã ticket là số đếm.
+  - Khách đang đăng nhập mặc định là U01; câu thử đổi khách bằng tiền tố `[U03]`.
+  - Model: tới CP2 vẫn ở chế độ giả (`MODEL_PROVIDER` trống). Khi đó lý do lấy từ từ khóa, lời giải thích dùng mẫu code. Phần gọi OpenAI / Claude / Gemini / Ollama đã viết trong `codebase/ai.py`, chờ key trong `.env`.
+  - T1 (trễ > 30 phút) là **luật tự đặt**.
+  - Xu và mã khuyến mãi ở ca hủy *không phải* đổi ý: chưa có quy định công khai, nên hệ thống không hứa hoàn.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -96,7 +138,7 @@ Cơ sở: lớp L3 ~700 học viên (02-guide.md mục 4.2). Giả định *(t�
 - Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:
 
 ## §10. Phân công & changelog
-- Phân công có tên (theo chặng, chia cặp — guide "Cách chia việc"): __
+- Phân công có tên (CP2, chia cặp): **Cặp 1** Nguyễn Công Tĩnh (code `codebase/`, data giả lập, §4, nối model, nộp) + Dương Tuấn Hưng (khảo sát, đọc tay review, canvas, §3) · **Cặp 2** Nguyễn Ngọc Minh Đức (phỏng vấn, §5, §7) + Trần Đăng Khoa (benchmark, metric, data card); Đức + Khoa chấm chéo 5 output.
 - Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`):
 - Nhật ký thay đổi — **mọi thay đổi sau CP2 19:30 Thứ Sáu 27/11 phải có dòng ở đây**:
 
