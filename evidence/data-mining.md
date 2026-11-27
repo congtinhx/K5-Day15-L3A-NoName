@@ -22,13 +22,13 @@
 - Hỗ trợ khách hàng chậm, trả lời mẫu.
 - Một phần review chỉ chửi chung ("tệ", "rác"), không nêu lý do.
 
-## 3. Kết quả (gắn nhãn bằng từ khóa — sẽ đọc tay lại nhóm "hủy đơn" trước CP2)
+## 3. Kết quả (đã đọc tay xác nhận nhóm "hủy đơn")
 
 | Đếm gì | x / N | % | Ghi chú |
 |---|---|---|---|
-| Nhắc **hủy đơn** (từ khóa `hủy/huỷ`) | 35/220 | 16% | 1★: 26/120 · 2★: 9/100 — **hướng chọn** |
-| …trong đó than **không cho hủy / không hủy được** | 17/220 | 7,7% | 1★: 13 · 2★: 4 |
-| …trong đó **đã trừ tiền nhưng không hoàn** | 4/220 | 1,8% | đều 1★ |
+| Nhắc **hủy đơn** (đã đọc tay xác nhận) | 34/220 | 15,5% | 1★: 26/120 · 2★: 8/100 (từ khóa bắt 35, đọc tay loại 1 câu bắt nhầm `R2-060` viết "hủy app") — **hướng chọn** |
+| …trong đó than **không cho hủy / không hủy được** | 23/220 | 10,5% | 1★: 16 · 2★: 7 (đọc tay tăng từ 17 → 23 do regex sót cách viết "k hủy món đc", "không được hủy đơn", "không hỗ trợ hủy đơn"…) |
+| …trong đó **đã thanh toán/trừ tiền, đơn hủy không hoàn hoặc mất tiền** | 5/220 | 2,3% | đều 1★ (`R1-002, R1-003, R1-079, R1-101, R1-107`; 4 câu nêu rõ mất tiền/không hoàn, `R1-003` bị trừ tiền rồi tự hủy) |
 | Giao trễ, chờ lâu | 67/220 | 30% | 1★: 34 · 2★: 33; 21/220 nhắc "ghép đơn" |
 | Phí, giá, voucher, deal | 37/220 | 17% | ít liên quan khiếu nại một đơn |
 | Tài xế | 29/220 | 13% | |
@@ -48,11 +48,14 @@
 5. R1-097 (27/10/2026): quán cách 2km mà lần nào cũng chờ ít nhất 45 phút, quán xa thì chờ mòn mỏi mà không cho hủy đơn.
 6. R1-107 (25/10/2026): đặt đồ ăn đã thanh toán trước, bị hủy rồi không hoàn tiền lại.
 7. R2-015 (17/10/2026): muốn hủy đơn, nhắn tin trợ giúp nhưng không ai hỗ trợ.
+8. R1-074 (01/11/2026): sinh viên ấn nhầm mua deal giá đắt hơn do giỏ hàng giống nhau nhưng app không cho hủy.
+9. R1-110 (25/10/2026): chờ 50 phút không có tài xế vẫn không cho hủy đơn; yêu cầu hủy thì bị cảnh báo ảnh hưởng tài khoản.
+10. R2-080 (12/03/2026): chưa có tài xế nhưng không cho hủy, bắt đợi nửa tiếng tìm tài xế mới cho hủy dù muốn đổi địa chỉ hoặc không còn nhu cầu.
 
 ## 5. Giới hạn của data
 
 - Review cho biết người ta **than gì**, không cho biết **vì sao** và **bao lâu một lần**.
 - Lệch về phía người bức xúc (chỉ lấy 1–2★); không đại diện cho mọi người dùng, cũng không riêng sinh viên.
-- Gắn nhãn bằng từ khóa có thể bắt nhầm (vd "hủy" trong câu khác nghĩa) hoặc bỏ sót (viết tắt, sai chính tả) → cần đọc tay lại 35 review nhãn "hủy đơn".
+- Gắn nhãn bằng từ khóa có thể bắt nhầm hoặc bỏ sót (viết tắt, sai chính tả) → đã đọc tay lại toàn bộ 35 review khớp từ khóa "hủy đơn": loại 1 câu bắt nhầm (`R2-060`: "hủy app"), giữ 34/220 (15,5%); các nhóm nhãn khác chưa đọc tay toàn bộ.
 - 2★ trải dài gần 1 năm, 1★ chỉ ~1 tháng → không so được tần suất theo thời gian.
 → Kiểm lại bằng: khảo sát ≥20 sinh viên ngoài nhóm (câu về lần gần nhất muốn hủy đơn, có biết luật hủy không) và phỏng vấn ≥3 người về "lần gần nhất muốn hủy đơn".
