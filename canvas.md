@@ -1,0 +1,16 @@
+# Canvas — NoName · Track D
+
+> Điền ở guide bước 1.4. CP1 17:00 Thứ Sáu 27/11: nộp bản đầu, đủ 7 dòng (dòng 4 được ghi giả thuyết + nguồn sẽ kiểm).
+> CP2 19:30 Thứ Sáu 27/11: cập nhật (số bằng chứng đầu, lát cắt đã chốt) và điền dòng "Đã đổi gì so với CP1".
+> Nguồn chính sách: Trung tâm Trợ giúp ShopeeFood (help.cs.shopeefood.vn), Quy chế hoạt động ShopeeFood, xem 27/11/2026. Mốc "quán trễ >30 phút → chuyển nhân viên" là mức nhóm TỰ ĐẶT.
+
+| # | Dòng | Nhóm điền |
+|---|---|---|
+| 1 | Track + lát cắt dự kiến | Track D1 · Xử lý khiếu nại đơn giao đồ ăn. Lát cắt dự kiến: yêu cầu hủy đơn ShopeeFood đã thanh toán trước. |
+| 2 | Người dùng chính (một vai cụ thể — không phải "học viên nói chung") | Sinh viên 18–24 tuổi đặt đồ ăn qua ShopeeFood, thanh toán trước bằng ShopeePay/thẻ, muốn hủy đơn vì chờ lâu, đặt nhầm hoặc đổi kế hoạch. |
+| 3 | Pain một câu: ai — đang làm gì — vướng đâu — hậu quả | Sinh viên muốn hủy một đơn đồ ăn vừa đặt nhưng không hiểu vì sao nút hủy bị mờ và không biết hủy thì mất bao nhiêu tiền/Xu/mã, nên phải chat hỗ trợ nhiều lần, chờ 1–3 ngày làm việc nếu tiền đã bị trừ, hoặc mất tiền khi hủy vì đổi ý. |
+| 4 | Bằng chứng đầu — CP1: giả thuyết + nguồn sẽ kiểm · CP2: số đầu tiên + 1 trích dẫn | Giả thuyết: vấn đề hủy đơn xuất hiện trong ≥15% review 1–2 sao và ≥30% sinh viên từng muốn hủy đơn trong 3 tháng qua. Số đầu (đếm từ khóa, chờ đọc tay): Google Play ShopeeFood, 220 review 1–2★ mới nhất (27/11/2026) → 35/220 = 16% nhắc hủy đơn; 17/220 = 7,7% than "không cho hủy"; 4/220 bị trừ tiền mà không được hoàn (chi tiết `evidence/data-mining.md`). Nguồn sẽ kiểm: khảo sát ≥20 sinh viên ngoài nhóm + phỏng vấn ≥3 người. |
+| 5 | **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả) | Một sinh viên · yêu cầu hủy đơn ShopeeFood đã thanh toán · hệ thống quyết định cho hủy kèm số tiền hoàn / giải thích không hủy được kèm giờ giao dự kiến / chuyển nhân viên · sinh viên biết ngay kết quả, số tiền và thời gian hoàn. |
+| 6 | AI tự làm đến đâu + 1 dòng lý do: sai thì ai chịu gì | Code đọc trạng thái đơn và tính tiền hoàn; hệ thống chỉ chọn hướng xử lý và viết câu trả lời. **Cho hủy** khi quán chưa xác nhận hoặc chưa có tài xế nhận đơn (hoàn về phương thức gốc, kiểm tra 1–3 ngày làm việc). **Từ chối + giải thích** khi quán đã xác nhận/tài xế đang giao; lý do đổi ý → báo rõ không hoàn tiền, Xu, mã. **Cảnh báo** khi khách đã hủy ≥2 đơn không lý do chính đáng. **Hỏi thêm** khi thiếu mã đơn/lý do. **Chuyển nhân viên** khi quán trễ >30 phút so với giờ dự kiến (tự đặt), tiền đã trừ mà đơn hủy chưa hoàn quá 3 ngày làm việc, tiền bị trừ mà không có đơn, số tiền vượt giá trị đơn, ngộ độc/dị ứng. Lời đe dọa không đổi quyết định; không tự bấm hủy/hoàn tiền thật (sandbox). **Lý do:** cho hủy sai → quán mất tiền món đã làm; từ chối sai → khách mất tiền và niềm tin; nên chỉ tự quyết khi luật trạng thái rõ, còn ca liên quan tiền đã bị trừ thì chuyển người. |
+| 7 | Phân công có tên | Đội trưởng, nộp form, repo, nối model, code: Nguyễn Công Tĩnh. Bằng chứng (đọc tay review, khảo sát): Dương Tuấn Hưng. Bằng chứng (phỏng vấn ≥3 người, bảng impact): Nguyễn Ngọc Minh Đức. Bảng trạng thái đơn, chính sách giả lập, data card, benchmark, metric: Trần Đăng Khoa. |
+| — | *(CP2)* Đã đổi gì so với CP1 | |
