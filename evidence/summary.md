@@ -8,7 +8,7 @@ Cập nhật ngày 27/11/2026. Tài liệu tổng hợp nguồn bằng chứng c
 |---|---|---|---|
 | Review Google Play | Đọc tay 35 review ứng viên, giữ 34/220 review thuộc nhóm hủy đơn | Mẫu chỉ gồm review 1–2 sao, không đại diện cho toàn bộ người dùng hoặc riêng sinh viên | [Cách đếm và kết quả](data-mining.md) |
 | Phỏng vấn | 3 biên bản của người ngoài nhóm NoName; người phỏng vấn đã xác nhận ngày 27/11/2026 | Không ghi nhận giờ; chưa xác nhận độ tuổi và mức phù hợp với nhóm sinh viên 18–24 tuổi | [P1](interviews/P1.md), [P2](interviews/P2.md), [P3](interviews/P3.md) |
-| Khảo sát | 20 phản hồi đã ẩn danh, gồm 9 học viên AI20K, 7 sinh viên 18–24 tuổi và 4 người đi làm | Mẫu gồm nhiều nhóm đối tượng; không gộp toàn bộ thành sinh viên 18–24 tuổi | [Bộ câu hỏi và tổng hợp](survey/questions.md), [dữ liệu khảo sát](survey/results.csv) |
+| Khảo sát | 20 phản hồi đã ẩn danh, gồm 9 học viên AI20K, 7 sinh viên 18–24 tuổi và 4 người đi làm | Mẫu gồm nhiều nhóm đối tượng (học viên L3, sinh viên, người đi làm); câu 4 có 0/20 phản hồi chọn "Chưa bao giờ" và 1 phiếu mâu thuẫn giữa câu 4–5 (nguy cơ lệch tự chọn) | [Bộ câu hỏi và tổng hợp](survey/questions.md), [dữ liệu khảo sát](survey/results.csv) |
 
 CP3 yêu cầu ít nhất một nguồn đạt ngưỡng của đề và ít nhất 5 trích dẫn nguyên văn. Việc đánh giá ngưỡng cần xét cả số lượng, đối tượng và giới hạn lấy mẫu. Riêng 3 cuộc phỏng vấn chưa đủ để xác nhận điều kiện đúng đối tượng sinh viên 18–24 tuổi.
 
@@ -32,9 +32,11 @@ Không tính thời gian trung bình vì cách xác định khoảng thời gian
 
 ### Khảo sát
 
-Dữ liệu có 20 phản hồi; 14 người cho biết có dùng thanh toán trước. Kết quả chi tiết và cách đếm nằm trong [báo cáo khảo sát](survey/questions.md). Khi sử dụng kết quả, cần phân biệt học viên AI20K, sinh viên 18–24 tuổi và người đi làm, đồng thời đối chiếu các câu trả lời mâu thuẫn trong dữ liệu gốc.
+Dữ liệu có 20 phản hồi (9 học viên AI20K L3A/L3B, 7 sinh viên 18–24 tuổi, 4 người đi làm); 14/20 (70%) có dùng thanh toán trước. Số liệu chính (chi tiết và cách đếm trong [báo cáo khảo sát](survey/questions.md)): 20/20 chọn ≥1 lần muốn hủy trong 3 tháng qua (19/20 nhất quán sau khi trừ 1 phiếu chọn "Chưa từng muốn hủy" ở câu 5); 13/20 (65%) không biết hủy vì đổi ý bị mất tiền/Xu/mã (thêm 4/20 biết một phần); 13/20 (65%) chưa biết rõ nút hủy bị mờ ngay khi quán xác nhận hoặc có tài xế; 4/20 (20%) từng bị trừ tiền nhưng hoàn chậm hoặc chưa hoàn; 5/20 (25%) không hủy được phải nhận hàng; 7/20 (35%) nêu lý do chính là chờ quán/tài xế quá lâu; 14/20 (70%) mất 5–30 phút xử lý. **Giới hạn mẫu khảo sát:** (1) mẫu gồm cả học viên L3 và người đi làm, không gộp toàn bộ thành sinh viên 18–24 tuổi; (2) câu 4 trong bộ câu hỏi có lựa chọn "Chưa bao giờ" nhưng thực tế 0/20 phiếu chọn và có 1 phiếu mâu thuẫn giữa câu 4 ("1 lần") với câu 5 ("Chưa từng muốn hủy"), cho thấy nguy cơ lệch tự chọn và cần đối chiếu các câu trả lời mâu thuẫn trong dữ liệu gốc.
 
-## 3. Trích dẫn nguyên văn từ khảo sát
+## 3. Trích dẫn nguyên văn (khảo sát và review, đã bỏ tên)
+
+### Trích dẫn nguyên văn từ khảo sát
 
 Các trích dẫn dưới đây lấy từ câu 11 trong [results.csv](survey/results.csv), đã bỏ thông tin định danh. Số phiếu là thứ tự dòng dữ liệu, không tính dòng tiêu đề. Giữ nguyên nội dung chữ; bỏ khoảng trắng thừa ở đầu và cuối câu.
 
@@ -47,11 +49,19 @@ Các trích dẫn dưới đây lấy từ câu 11 trong [results.csv](survey/re
 | #18 | “không thể hủy đơn ngay lập tức” |
 | #19 | “muốn hủy nhưng không thể hủy” |
 
+### Trích dẫn nguyên văn từ review Google Play (đã bỏ tên)
+
+| Mã review | Ngày đăng | Nội dung nguyên văn |
+|---|---|---|
+| R1-074 (1★) | 01/11/2026 | “Để giống nhau, ấn nhầm mua deal còn không cho hủy. Thề luôn đấy, định mua bình thường, vào shop mua mà giỏ hàng giống nhau mua nhầm deal giá đắt hơn. Sinh viên làm gì có nhiều tiền mà mua.” |
+| R1-002 (1★) | 24/11/2026 | “Đơn hàng bị hủy do ship nhưng 2 tháng trời bên shopee food ko hoàn lại tiền. Đòi t gửi sao kê giấy nhưng lại ko gửi cho t chứng từ hoàn tiền thành công.” |
+| R1-110 (1★) | 25/10/2026 | “50p không có tài xế mà lại không cho hủy đơn. yêu cầu hủy thì đe doạ ngược lại ảnh hưởng tài khoản?” |
+
 Các tình huống phỏng vấn trong mục 2 là bản tóm tắt biên bản. Phần làm rõ P2 do người phỏng vấn cung cấp được ghi riêng trong biên bản P2.
 
 ## 4. Đối chiếu giữa các nguồn
 
-Review và khảo sát cùng ghi nhận phản ánh về việc không hủy được hoặc tiền chưa được hoàn. P3 bổ sung tình huống app chặn hủy sau xác nhận; P2 bổ sung trường hợp lỗi và bị từ chối hoàn nhưng chưa rõ nguyên nhân. P1 ghi nhận trường hợp hủy và nhận tiền nhanh, cho thấy trải nghiệm không đồng nhất.
+Review (`34/220 = 15,5%` nhắc hủy đơn; `23/220 = 10,5%` không hủy được; `5/220 = 2,3%` đã thanh toán/trừ tiền, đơn hủy không hoàn hoặc mất tiền) và khảo sát (`n = 20`: `65%` chưa biết luật mất tiền/Xu/mã khi đổi ý, `65%` chưa biết rõ nút hủy bị mờ, `20%` từng bị trừ tiền hoàn chậm/chưa hoàn, `35%` lý do chính là chờ lâu) cùng ghi nhận phản ánh về việc không hủy được, thiếu thông tin trước khi hủy hoặc tiền hoàn chậm. P3 bổ sung tình huống app chặn hủy sau xác nhận; P2 bổ sung trường hợp lỗi và bị từ chối hoàn nhưng chưa rõ nguyên nhân. P1 ghi nhận trường hợp hủy và nhận tiền nhanh, cho thấy trải nghiệm không đồng nhất.
 
 Các nguồn hỗ trợ việc chọn tình huống cho bản chạy thử, nhưng chưa đủ để kết luận mọi khách hàng đều khó hủy, mọi trường hợp chưa hoàn đều sai luật, hoặc các vấn đề này phổ biến ở mức nào trong toàn bộ nhóm sinh viên. Kết quả phỏng vấn chưa trực tiếp xác nhận các ngưỡng H1–H5 trong [hồ sơ giả thuyết](hypothesis.md).
 
@@ -63,7 +73,7 @@ Các nguồn hỗ trợ việc chọn tình huống cho bản chạy thử, như
 | Giờ phỏng vấn | Không ghi nhận; giữ nguyên trạng thái thiếu dữ liệu | Đức |
 | Độ tuổi và mức phù hợp với đối tượng sinh viên 18–24 tuổi | Chưa xác nhận | Đức |
 | Lỗi cụ thể và lý do P2 bị từ chối hoàn | Chưa ghi nhận | Đức |
-| Đối chiếu kết quả khảo sát, giới hạn mẫu và review | Tham chiếu tài liệu khảo sát và data-mining; cần hoàn thiện tổng hợp cho CP3 | Hưng |
+| Đối chiếu kết quả khảo sát, giới hạn mẫu và review | Đã hoàn thiện tổng hợp số liệu, giới hạn mẫu và trích dẫn nguyên văn từ cả khảo sát lẫn review cho CP3 (28/11/2026) | Hưng |
 
 ## 6. Tình huống thực tế đề xuất cho bộ câu thử CP3
 
