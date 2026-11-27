@@ -187,7 +187,11 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
         eta = _t(order["gio_du_kien"])
         late = (t_now - eta).total_seconds() / 60
         if late > LATE_MIN and status in AT_SHOP:
-            return out("chuyen_nguoi", "Đơn trễ %d phút so với giờ dự kiến (> %d phút)." % (late, LATE_MIN), ["T1", "P2"])
+            where = {"quan_da_xac_nhan": "quán đã xác nhận, món còn ở quán",
+                     "tai_xe_da_nhan": "tài xế đã nhận đơn, món còn ở quán"}[status]
+            return out("chuyen_nguoi", "Đơn %s và đã trễ %d phút so với giờ giao dự kiến %s (quá ngưỡng 30 phút)."
+                       % (where, late, order["gio_du_kien"][11:16]), ["T1", "P2"],
+                       du_kien=order["gio_du_kien"][11:16], tre_phut=int(late), trang_thai=status)
         luat = ["P2"] + (["P3"] if reason == "cho_lau" else []) + (["P4"] if reason == "doi_y" else [])
         why = {"quan_da_xac_nhan": "Quán đã xác nhận làm món",
                "tai_xe_da_nhan": "Tài xế đã nhận đơn và quán đang chuẩn bị món",
