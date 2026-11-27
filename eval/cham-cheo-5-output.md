@@ -1,6 +1,6 @@
-# 5 output để chấm chéo (CP2) — bản sau audit 17:50
+# 5 output để chấm chéo (CP2) — bản 18:25
 
-> Sinh bằng `codebase/agent.py`, **chế độ model giả**, data giả lập (seed 15), lúc 27/11/2026. Đức và Khoa chấm **độc lập** theo `eval/metric_spec.yaml`, ghi kết quả vào `eval/README.md` mục 3. Cần khớp ≥ 4/5.
+> Sinh bằng `codebase/agent.py`, **chế độ model giả**, data giả lập (17 đơn, seed 15), lúc 27/11/2026. Đức và Khoa chấm **độc lập** theo `eval/metric_spec.yaml`, ghi kết quả vào `eval/README.md` mục 3. Cần khớp ≥ 4/5.
 
 ## O1
 
@@ -25,7 +25,7 @@ Mình đã tạo yêu cầu hủy, bạn bấm Xác nhận hủy để hoàn t�
 
 ```
 QUYẾT ĐỊNH: KHÔNG HỦY ĐƯỢC · Đơn SF1002 · Giao dự kiến: 19:20 · Căn cứ: P2, P4
-Quán đã xác nhận hoặc tài xế đã nhận đơn nên không hủy được.
+Quán đã xác nhận làm món nên không hủy được.
 Đơn dự kiến giao lúc 19:20, bạn vui lòng chờ thêm.
 Lưu ý: nếu hủy vì đổi ý sẽ không được hoàn tiền, Xu và mã khuyến mãi.
 ```

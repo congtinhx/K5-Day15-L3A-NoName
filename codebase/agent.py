@@ -125,7 +125,7 @@ def header(d, order, extra):
     if d["quyet_dinh"] == "cho_huy":
         parts.append("Số tiền được hoàn: %s" % tools.vnd(d["hoan_tien"]))
     if d.get("du_kien"):
-        parts.append("Giao dự kiến: %s" % d["du_kien"])
+        parts.append("Giao dự kiến: %s%s" % (d["du_kien"], " (đã trễ %d phút)" % d["tre_phut"] if d.get("tre_phut") else ""))
     if extra.get("ticket"):
         parts.append("Ticket: %s" % extra["ticket"])
     if d["luat"]:
@@ -162,7 +162,15 @@ def template_body(d, order, flags, extra):
         lines.append("Mình đã tạo yêu cầu hủy, bạn bấm Xác nhận hủy để hoàn tất (hệ thống không tự hủy thay bạn).")
     elif q == "tu_choi":
         lines.append(d["ly_do"])
-        if d.get("du_kien"):
+        if d.get("du_kien") and d.get("tre_phut"):
+            lines.append("Đơn đã trễ %d phút so với giờ giao dự kiến %s." % (d["tre_phut"], d["du_kien"]))
+            if d.get("trang_thai") == "dang_giao":
+                lines.append("Món đã rời quán nên quy định trễ 30 phút không áp dụng. Nếu món có vấn đề khi nhận, "
+                             "bạn gửi khiếu nại trong 12 tiếng.")
+            else:
+                lines.append("Mức trễ chưa quá 30 phút nên hệ thống chưa chuyển nhân viên. "
+                             "Nếu trễ hơn 30 phút, bạn nhắn lại để mình chuyển nhân viên xem xét cho hủy.")
+        elif d.get("du_kien"):
             lines.append("Đơn dự kiến giao lúc %s, bạn vui lòng chờ thêm." % d["du_kien"])
         if "P4" in d["luat"] and order:
             lines.append("Lưu ý: nếu hủy vì đổi ý sẽ không được hoàn tiền, Xu và mã khuyến mãi.")
@@ -176,7 +184,7 @@ def template_body(d, order, flags, extra):
     elif q == "thong_tin":
         lines.append(d["ly_do"])
         if order and order.get("thanh_toan") in tools.PREPAID:
-            lines.append("ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn về %s. "
+            lines.append("Sau khi kiểm tra xong, tiền được hoàn về %s. "
                          "Nếu quá 3 ngày làm việc vẫn chưa nhận, nhắn lại để mình chuyển nhân viên."
                          % PAY[order["thanh_toan"]])
     if flags.get("de_doa") and q != "chuyen_nguoi":

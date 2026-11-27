@@ -82,6 +82,7 @@ flowchart TD
 - **Cách đọc luật (đã rà theo audit 27/11):**
   - **P1 + P2:** P1 cho hủy khi "quán chưa xác nhận *hoặc* chưa có tài xế". P2 chặn hủy khi "quán đã xác nhận *hoặc* tài xế đang giao". Đọc hai luật cùng nhau, hệ thống chỉ cho hủy khi **cả hai việc chưa xảy ra** (trạng thái `cho_xac_nhan`), để không mâu thuẫn với P2.
   - **P5:** hệ thống chỉ nói "ShopeeFood kiểm tra giao dịch trong 1–3 ngày làm việc rồi hoàn về phương thức gốc", không cam kết tiền về trong 1–3 ngày.
+  - **Số tiền hoàn khi hủy được mà không phải đổi ý** (vd B01, SF1001 chờ lâu → 88.000đ): hệ thống hoàn **toàn bộ số tiền khách đã thanh toán** (`tong_tien`) về phương thức gốc. Đây là *cách nhóm suy ra*: P4 chỉ loại trừ hoàn tiền khi hủy vì đổi ý, còn P5 nói đơn đã trừ tiền mà chưa hoàn thành thì được hoàn về phương thức ban đầu. ShopeeFood không công bố công thức tính tiền hoàn. Xu và mã khuyến mãi không hứa trước.
   - **T1 (tự đặt):** chỉ áp khi món còn ở quán (`quan_da_xac_nhan`, `tai_xe_da_nhan`). Đơn đang giao thì không áp.
   - **Thiếu mã đơn:** luôn hỏi thêm, không tự chọn đơn, kể cả khi khách chỉ có 1 đơn đang chạy.
   - **Sức khỏe:** chuyển nhân viên ngay, không hỏi chọn đơn trước.

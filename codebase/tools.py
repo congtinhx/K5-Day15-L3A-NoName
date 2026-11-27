@@ -114,7 +114,7 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
     Không tác động ra ngoài. Mọi phép tính tiền và kiểm trạng thái nằm ở đây."""
     t_now = _t(now_s)
     d = {"quyet_dinh": None, "hoan_tien": 0, "hoan_xu": False, "hoan_ma": False,
-         "luat": [], "ly_do": "", "canh_bao": [], "du_kien": None}
+         "luat": [], "ly_do": "", "canh_bao": [], "du_kien": None, "tre_phut": 0, "trang_thai": None}
 
     def out(q, ly_do, luat, **kw):
         d.update(quyet_dinh=q, ly_do=ly_do, luat=luat, **kw)
@@ -152,11 +152,12 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
     # 5. Đơn đã hủy — hỏi tiền hoàn
     if status == "da_huy":
         if not prepaid or order.get("hoan_tien") == "da_hoan":
-            return out("thong_tin", "Đơn đã hủy và không còn khoản chờ hoàn.", ["P5"])
+            return out("thong_tin", "Đơn đã hủy và không còn khoản nào đang chờ hoàn.", ["P5"])
         n = business_days_between(_t(order["gio_huy"]), t_now)
         if n > REFUND_DAYS:
             return out("chuyen_nguoi", "Đơn đã hủy %d ngày làm việc mà chưa hoàn (quá %d ngày)." % (n, REFUND_DAYS), ["P5"])
-        return out("thong_tin", "Đơn đã hủy %d ngày làm việc, vẫn trong hạn hoàn 1–3 ngày làm việc." % n, ["P5"])
+        return out("thong_tin", "Đơn đã hủy được %d ngày làm việc. ShopeeFood đang trong thời gian kiểm tra giao dịch "
+                   "(1–3 ngày làm việc); đây là thời gian kiểm tra, không phải hạn chắc chắn tiền về." % n, ["P5"])
 
     # 6. Đơn đã giao
     if status == "da_giao":
@@ -189,8 +190,11 @@ def check_cancel(order: dict, user_id: str, reason: str, flags: dict, history: d
         if late > LATE_MIN and status in AT_SHOP:
             return out("chuyen_nguoi", "Đơn trễ %d phút so với giờ dự kiến (> %d phút)." % (late, LATE_MIN), ["T1", "P2"])
         luat = ["P2"] + (["P3"] if reason == "cho_lau" else []) + (["P4"] if reason == "doi_y" else [])
-        return out("tu_choi", "Quán đã xác nhận hoặc tài xế đã nhận đơn nên không hủy được.", luat,
-                   du_kien=order["gio_du_kien"][11:16])
+        why = {"quan_da_xac_nhan": "Quán đã xác nhận làm món",
+               "tai_xe_da_nhan": "Tài xế đã nhận đơn và quán đang chuẩn bị món",
+               "dang_giao": "Tài xế đang giao đơn"}[status]
+        return out("tu_choi", why + " nên không hủy được.", luat,
+                   du_kien=order["gio_du_kien"][11:16], tre_phut=max(0, int(late)), trang_thai=status)
 
     return out("chuyen_nguoi", "Trạng thái đơn không rõ (%s)." % status, [])
 
