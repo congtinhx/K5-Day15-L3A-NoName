@@ -1,6 +1,6 @@
 # Reflection — Nguyễn Ngọc Minh Đức
 
-Nhóm NoName · Ngày 28/11/2026. Bản thảo cá nhân, được AI hỗ trợ tổng hợp từ hồ sơ dự án.
+Nhóm NoName · Ngày 28/11/2026. Bản thảo cá nhân
 
 ## 1. Vai trò và phần việc đã làm
 
