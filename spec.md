@@ -180,10 +180,10 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 4. Báo cáo ba metric còn lại theo ngưỡng trong bảng.
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
-- Chi phí / task thành công: __ (model __) · __ (model __)
-- Chi phí / tháng ở quy mô thật: thấp __ · cơ sở __ · cao __ → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm không, vì sao:
+- Persona + giá: `cost/personas.yaml` (3 persona: ít 50% · 0,1 lần/tháng · vừa 35% · 0,3 · nhiều 15% · 1; giá gpt-5.4-nano và gpt-5.4-mini) · lượt mô phỏng: `cost/simulate-1.csv` (50 phiên, seed 42, 0 lỗi, run ID `simulate-1@20261128-112625`)
+- Chi phí / task thành công: **$0.00035 (model gpt-5.4-nano)** · $0.0013 (model gpt-5.4-mini) — tính với tỉ lệ đạt lượt 1 (17/25 = 68%); cập nhật bằng lượt 2 khi chấm xong.
+- Chi phí / tháng ở quy mô thật (gpt-5.4-nano; 41.000 · 205.000 · 410.000 người = 1% · 5% · 10% của 4,1 triệu người dùng ShopeeFood, Znews 12/07/2024, tỉ lệ *(tự ước tính)*): thấp **$3.01** · cơ sở **$15.04** · cao **$30.08** → chi tiết `cost/cost-estimate.md`
+- So với impact / người / tháng (§2): chi phí model $0.000073 / người / tháng so với ~4,6 phút + ~1.800đ rủi ro mất tiền tiết kiệm được / người / tháng *(tự ước tính)* → **đáng làm xét về chi phí model**. Chi phí thật nằm ở giờ công nhân viên cho ~20% ca chuyển người và ở chất lượng (lượt 1 mới 68% < chuẩn 80%).
 
 ## §9. Rủi ro & an toàn
 - **Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:**
