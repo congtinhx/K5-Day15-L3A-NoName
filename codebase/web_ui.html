@@ -97,6 +97,16 @@ textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
 .legend span:before{content:"●";margin-right:4px}
 .legend .l1:before{color:var(--ok)} .legend .l2:before{color:var(--hum)} .legend .l3:before{color:var(--ask)}
 .foot{font-size:12px;color:var(--mute);padding:8px 16px;border-top:1px solid var(--line)}
+.newbtn{width:100%;border:1.5px dashed var(--acc);color:var(--acc);background:#fffaf8;border-radius:12px;padding:9px;font-weight:700;margin-bottom:10px}
+.nform{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;background:var(--soft);display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.nform label{font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:3px}
+.nform input,.nform select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none}
+.nform .full{grid-column:1/-1}
+.nform .row{display:flex;gap:8px;grid-column:1/-1}
+.nform .row button{flex:1;border-radius:10px;padding:8px;font-weight:700}
+.nform .ok{background:var(--acc);color:#fff;border:0} .nform .cc{background:#fff;border:1px solid var(--line)}
+.tamtag{font-size:11px;font-weight:700;color:#fff;background:var(--acc);border-radius:999px;padding:1px 7px;margin-left:6px}
+.err{color:var(--no);font-size:13px;grid-column:1/-1}
 @media (max-width:1000px){main{grid-template-columns:1fr}.panel.sidep{max-height:50vh}}
 </style>
 </head>
@@ -182,10 +192,12 @@ function renderSide(){
   const el = $("#side");
   if (TAB === "orders"){
     const me = $("#user").value;
-    const list = [...BOOT.orders].sort((a,b)=> (a.user_id===me?0:1)-(b.user_id===me?0:1) || a.order_id.localeCompare(b.order_id));
-    el.innerHTML = `<div class="hint">Bấm một đơn để đưa mã vào ô nhắn. Đơn của khách đang đăng nhập (${me}) có viền cam. Giờ trong sandbox cố định để kết quả lặp lại được.</div>` +
+    const list = [...BOOT.orders].sort((a,b)=> (b.tam?1:0)-(a.tam?1:0) || (a.user_id===me?0:1)-(b.user_id===me?0:1) || a.order_id.localeCompare(b.order_id));
+    el.innerHTML = `<button class="newbtn" id="newbtn">+ Tạo đơn thử (theo yêu cầu giám khảo)</button>
+      <div id="nform"></div>
+      <div class="hint">Bấm một đơn để đưa mã vào ô nhắn. Đơn của khách đang đăng nhập (${me}) có viền cam. Giờ sandbox cố định ${BOOT.now.slice(11,16)} để kết quả lặp lại được.</div>` +
       list.map(o => `<div class="order ${o.user_id===me?"mine":""}" data-id="${o.order_id}">
-        <div class="orow"><span class="oid">${o.order_id} <span class="osub">· ${o.user_id}</span></span><span class="st st-${o.trang_thai}">${ST[o.trang_thai]||o.trang_thai}</span></div>
+        <div class="orow"><span class="oid">${o.order_id}${o.tam?'<span class="tamtag">THỬ</span>':''} <span class="osub">· ${o.user_id}</span></span><span class="st st-${o.trang_thai}">${ST[o.trang_thai]||o.trang_thai}</span></div>
         <div class="osub">${vnd(o.tong_tien)} · ${PAY[o.thanh_toan]||o.thanh_toan} · đặt ${o.gio_dat.slice(11,16)} · dự kiến ${o.gio_du_kien.slice(11,16)}${o.gio_huy?" · hủy "+o.gio_huy.slice(8,10)+"/"+o.gio_huy.slice(5,7):""}${o.gio_giao?" · giao "+o.gio_giao.slice(11,16):""}</div>
         <div class="osub">${esc(o.kich_ban)}</div></div>`).join("");
   } else if (TAB === "rules"){
@@ -204,6 +216,36 @@ function renderSide(){
         return `<div class="ev ${k}"><span class="k">${esc(name)}</span><span class="t">${esc(t+extra)}</span>${e.error?`<pre>${esc(e.error)}</pre>`:""}<pre>${esc(detail)}</pre></div>`;
       }).join("");
   }
+}
+
+function showForm(){
+  const box = $("#nform"); if (!box) return;
+  if (box.innerHTML){ box.innerHTML = ""; return; }
+  const users = Object.keys(BOOT.users).map(u => `<option ${u===$("#user").value?"selected":""}>${u}</option>`).join("");
+  box.innerHTML = `<div class="nform">
+    <label>Khách<select id="f_user">${users}</select></label>
+    <label>Trạng thái<select id="f_st">${Object.entries(ST).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label>
+    <label>Tổng tiền (đ)<input id="f_tien" type="number" value="200000" step="1000" min="1000"></label>
+    <label>Thanh toán<select id="f_pay"><option value="shopeepay">ShopeePay</option><option value="the">Thẻ</option><option value="tien_mat">Tiền mặt</option></select></label>
+    <label class="full" id="f_extra_l"><span id="f_extra_t">Trễ so với giờ dự kiến (phút, số âm = chưa tới giờ)</span><input id="f_extra" type="number" value="0"></label>
+    <div class="err" id="f_err"></div>
+    <div class="row"><button class="cc" id="f_cancel">Hủy</button><button class="ok" id="f_ok">Tạo đơn</button></div></div>`;
+  const sync = () => { const st = $("#f_st").value;
+    $("#f_extra_t").textContent = st==="da_huy" ? "Đã hủy cách đây (ngày) — chưa hoàn tiền" : st==="da_giao" ? "Đã giao cách đây (tiếng)" : "Trễ so với giờ dự kiến (phút, số âm = chưa tới giờ)";
+    $("#f_extra").value = st==="da_huy" ? 1 : st==="da_giao" ? 1 : 0; };
+  $("#f_st").onchange = sync;
+  $("#f_cancel").onclick = () => { box.innerHTML = ""; };
+  $("#f_ok").onclick = async () => {
+    const st = $("#f_st").value, x = $("#f_extra").value;
+    const body = {user_id:$("#f_user").value, trang_thai:st, tong_tien:+$("#f_tien").value, thanh_toan:$("#f_pay").value};
+    if (st==="da_huy") body.so_ngay = +x; else if (st==="da_giao") body.so_gio = +x; else body.tre_phut = +x;
+    const res = await fetch("/api/order", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    const o = await res.json();
+    if (!res.ok){ $("#f_err").textContent = o.error || "Lỗi tạo đơn"; return; }
+    BOOT.orders.push(o);
+    $("#user").value = o.user_id; renderSide();
+    const t = $("#inp"); t.value = "Đơn " + o.order_id + " "; t.focus(); autosize();
+  };
 }
 
 function addMe(text){
@@ -263,6 +305,7 @@ $("#inp").addEventListener("input", autosize);
 $("#quick").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) send(QUICK[b.dataset.i][2]); });
 document.querySelectorAll(".tab").forEach(b => b.onclick = () => setTab(b.dataset.t));
 $("#side").addEventListener("click", e => {
+  if (e.target.id === "newbtn") return showForm();
   const o = e.target.closest(".order"); if (!o) return;
   const t = $("#inp"); t.value = (t.value ? t.value.trim() + " " : "") + "đơn " + o.dataset.id + " "; t.focus(); autosize();
 });

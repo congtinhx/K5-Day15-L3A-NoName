@@ -33,6 +33,19 @@ from agent import answer, LABEL  # noqa: E402
 from ai import MODEL_PROVIDER, MODEL_NAME  # noqa: E402
 
 LOCK = threading.Lock()   # tracing dùng biến toàn cục → xử lý từng câu một
+EXTRA = {}                # đơn thử tạo từ giao diện: chỉ trong bộ nhớ, tắt server là mất, không ghi file
+
+_orig_load = tools._load
+
+
+def _load_with_extra(name):
+    data = _orig_load(name)
+    if name == "orders.json" and EXTRA:
+        data = dict(data, orders=dict(data["orders"], **EXTRA))
+    return data
+
+
+tools._load = _load_with_extra   # get_order / list_active_orders thấy cả đơn thử
 CODE_OF = {v: k for k, v in LABEL.items()}
 
 
@@ -80,8 +93,48 @@ def ask(text, user):
             "summary": summary, "events": events, "latency_s": latency, "error": err}
 
 
+def create_order(req):
+    """Tạo đơn thử theo mô tả của giám khảo. Giờ tính tương đối so với giờ sandbox."""
+    import datetime as dt
+    now = dt.datetime.fromisoformat(load_json("orders.json")["meta"]["now"])
+    st = req.get("trang_thai") or "cho_xac_nhan"
+    if st not in ("cho_xac_nhan", "quan_da_xac_nhan", "tai_xe_da_nhan", "dang_giao", "da_giao", "da_huy"):
+        raise ValueError("trạng thái không hợp lệ")
+    user = req.get("user_id") or "U01"
+    if user not in load_json("users.json")["users"]:
+        raise ValueError("khách không hợp lệ")
+    total = int(req.get("tong_tien") or 0)
+    if not 1000 <= total <= 10_000_000:
+        raise ValueError("tổng tiền 1.000–10.000.000đ")
+    pay = req.get("thanh_toan") or "shopeepay"
+    if pay not in ("shopeepay", "the", "tien_mat"):
+        raise ValueError("thanh toán không hợp lệ")
+    oid = "SF%d" % (9001 + len(EXTRA))
+    fmt = lambda t: t.strftime("%Y-%m-%dT%H:%M")
+    o = {"order_id": oid, "user_id": user, "quan": "Quán Thử", "trang_thai": st, "tong_tien": total,
+         "thanh_toan": pay, "xu_da_dung": 0, "ma_khuyen_mai": None, "label": "synthetic", "tam": True}
+    if st == "da_huy":
+        days = int(req.get("so_ngay") or 1)
+        cancel = now - dt.timedelta(days=days)
+        o.update(gio_dat=fmt(cancel - dt.timedelta(minutes=30)), gio_du_kien=fmt(cancel + dt.timedelta(minutes=10)),
+                 gio_huy=fmt(cancel), hoan_tien="chua_hoan", kich_ban="Đơn thử: đã hủy cách đây %d ngày, chưa hoàn" % days)
+    elif st == "da_giao":
+        hours = float(req.get("so_gio") or 1)
+        done = now - dt.timedelta(hours=hours)
+        o.update(gio_dat=fmt(done - dt.timedelta(minutes=40)), gio_du_kien=fmt(done), gio_giao=fmt(done),
+                 kich_ban="Đơn thử: đã giao cách đây %g tiếng" % hours)
+    else:
+        late = int(req.get("tre_phut") or 0)
+        eta = now - dt.timedelta(minutes=late)
+        o.update(gio_dat=fmt(eta - dt.timedelta(minutes=40)), gio_du_kien=fmt(eta),
+                 kich_ban="Đơn thử: " + ("trễ %d phút so với giờ dự kiến" % late if late > 0 else
+                                          "còn %d phút nữa mới tới giờ dự kiến" % -late if late < 0 else "đúng giờ dự kiến"))
+    EXTRA[oid] = o
+    return o
+
+
 def bootstrap():
-    o, u = load_json("orders.json"), load_json("users.json")
+    o, u = tools._load("orders.json"), load_json("users.json")
     return {"now": o["meta"]["now"], "orders": list(o["orders"].values()), "users": u["users"],
             "policy": tools.POLICY, "provider": MODEL_PROVIDER,
             "model": MODEL_NAME if MODEL_PROVIDER != "fake" else "chế độ giả (chưa nối model)"}
@@ -106,6 +159,13 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(404, '{"error":"not found"}')
 
     def do_POST(self):
+        if self.path == "/api/order":
+            n = int(self.headers.get("Content-Length") or 0)
+            try:
+                o = create_order(json.loads(self.rfile.read(n).decode("utf-8") or "{}"))
+            except (ValueError, TypeError) as e:
+                return self._send(400, json.dumps({"error": str(e)}, ensure_ascii=False))
+            return self._send(200, json.dumps(o, ensure_ascii=False))
         if self.path != "/api/ask":
             return self._send(404, '{"error":"not found"}')
         n = int(self.headers.get("Content-Length") or 0)
