@@ -2,6 +2,8 @@
 
 Một sinh viên nhắn yêu cầu hủy đơn ShopeeFood đã thanh toán → hệ thống tra đơn, áp luật hủy/hoàn bằng code → trả **cho hủy kèm số tiền hoàn / không hủy được kèm giờ giao dự kiến / hỏi thêm / chuyển nhân viên**. Sandbox, data giả lập; không hủy hay hoàn tiền thật. Thiết kế: [spec.md §4](spec.md).
 
+**Demo bằng giao diện web:** `python codebase/web.py` → mở http://127.0.0.1:8000 (gọi đúng `answer()` trong `codebase/agent.py`, cùng luồng với `run.py eval`; chỉ thư viện chuẩn). Bản dòng lệnh vẫn là `python run.py`.
+
 **Thành viên, lớp, track:** xem [TEAMS.md](TEAMS.md). **Điền TEAMS.md đúng format**: khi chấm và đánh giá, BTC quét file này để ghép điểm cho từng người.
 
 *Lát cắt = phần nhỏ nhất làm xong được trong hackathon: một người dùng · một việc · một quyết định AI · một kết quả.*
