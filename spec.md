@@ -186,9 +186,24 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 - So với impact / người / tháng (§2): đáng làm không, vì sao:
 
 ## §9. Rủi ro & an toàn
-- Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:
-- AI **không được** làm gì kể cả khi người dùng yêu cầu:
-- Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:
+- **Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:**
+  - *Đã ẩn danh:* Review Google Play (`evidence/data-mining.md`, `evidence/count_reviews.js`) không lưu tên người viết, chỉ gắn mã `R1-xxx` / `R2-xxx` và ngày đăng; khảo sát (`evidence/survey/questions.md`, `evidence/survey/results.csv`) tắt thu thập email, không hỏi họ tên/mã học viên và đã xóa hoàn toàn cột câu 12 (Zalo/FB liên hệ); biên bản phỏng vấn (`P1`–`P3`) chỉ ghi mã và vai trò học viên L3 ngoài nhóm; dữ liệu đơn hàng và khách hàng trong bản chạy thử (`data/orders.json`, `data/users.json`) là 100% giả lập (`synthetic`, seed 15, mã đơn `SFxxxx`, khách `U01–U04`).
+  - *Không thu gì:* Không thu họ tên thật, số điện thoại, email, địa chỉ giao hàng, số thẻ/tài khoản ví, lịch sử giao dịch ngân hàng, mật khẩu hay OTP; không commit `.env`, API key hay tập review thô vào repo.
+  - *Không đưa gì vào model gói miễn phí (và nguyên tắc gọi API):* Không gửi thông tin định danh cá nhân (PII: tên, SĐT, địa chỉ, thông tin thanh toán thật, mã đơn thật hoặc tình trạng sức khỏe gắn danh tính) lên model gói miễn phí (nơi nhà cung cấp có thể lưu hoặc dùng dữ liệu để huấn luyện). Bản chạy thử hiện dùng OpenAI API (`gpt-5.4-nano`, trả phí theo token) và chỉ gửi nội dung câu hỏi cùng bản nháp dựa trên dữ liệu `synthetic`. Nếu triển khai thật, cần lọc/che PII trước khi gọi model và dùng gói API có cam kết không huấn luyện trên dữ liệu đầu vào.
+- **AI không được làm gì kể cả khi người dùng yêu cầu:**
+  - Không tự hủy đơn thật, không tự hoàn tiền thật hoặc ghi đè trạng thái đơn (`cancel_order` chỉ tạo bản nháp `ban_nhap_cho_khach_xac_nhan` chờ khách tự bấm xác nhận).
+  - Không tự tính số tiền hoàn, không hứa hoàn tiền/Shopee Xu/mã khuyến mãi ở ca đổi ý (P4) hoặc ca không đủ điều kiện hủy (P2, P7), và không cam kết tiền chắc chắn về trong 1–3 ngày làm việc (P5 chỉ là thời gian ShopeeFood kiểm tra giao dịch).
+  - Không tự cấp voucher, bồi thường, hoàn phí ship hay duyệt số tiền vượt giá trị đơn (`tong_tien`).
+  - Không thao tác hoặc tiết lộ thông tin đơn hàng thuộc tài khoản khác (`order["user_id"] != user_id`).
+  - Không làm theo yêu cầu bỏ qua quy định / jailbreak (`tan_cong`) hoặc lời tự xưng nhân viên/admin/quản lý (`tu_xung_nhan_vien`) để duyệt ngoại lệ; không thay đổi quyết định trước lời đe dọa (đánh giá 1 sao, bóc phốt, kiện).
+  - Không tự chọn đơn hộ khi thiếu mã đơn hoặc có nhiều đơn đang chạy (G10 → `hoi_them`); không chẩn đoán y tế hoặc hỏi vòng vo khi khách báo ngộ độc/dị ứng.
+- **Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:**
+
+  | Bên có thể bị hại | Hậu quả nếu AI sai | Nhóm chặn thế nào (code & quy trình) |
+  |---|---|---|
+  | **Khách hàng (sinh viên)** | Hiểu nhầm được hoàn tiền khi đổi ý (mất tiền/Xu/mã), bị từ chối oan, tin cam kết sai về hạn tiền về, hoặc chậm xử lý ca y tế / tiền đã trừ | `check_cancel` (code) quyết định và tính tiền; `header()` in cứng `QUYẾT ĐỊNH` và `Số tiền được hoàn`; `cancel_order` chỉ tạo bản nháp chờ khách tự bấm xác nhận; ưu tiên kiểm `suc_khoe` đầu tiên (`chuyen_nguoi` ngay kèm nhắc tới cơ sở y tế/gọi 115); tự động `escalate_to_human` khi trừ tiền không đơn hoặc quá 3 ngày làm việc chưa hoàn; `check_llm` chặn bỏ sót dữ kiện (`facts`: số tiền, mốc giờ, cảnh báo P6 khóa tài khoản) và chặn hứa tiền về sai P5. |
+  | **Quán ăn và tài xế** | Cho hủy đơn khi món đã làm hoặc tài xế đang giao, gây thiệt hại chi phí món ăn và công vận chuyển | Đọc trạng thái trực tiếp từ `get_order` (không tin lời khách khi mâu thuẫn dữ liệu); ghép P1+P2 chỉ cho `cho_huy` ở trạng thái `cho_xac_nhan`; trả `tu_choi` với `quan_da_xac_nhan`, `tai_xe_da_nhan`, `dang_giao` (ngoại lệ T1 tự đặt khi món còn ở quán trễ >30 phút chỉ chuyển nhân viên xem xét, không tự hủy). |
+  | **Nền tảng (ShopeeFood) và vận hành** | Bị prompt injection hoặc giả danh nhân viên để trục lợi voucher, bồi thường vượt giá trị đơn, hoặc rò rỉ dữ liệu đơn người khác | `safety_flags()` bắt cờ `tan_cong`, `tu_xung_nhan_vien`, `doi_boi_thuong` và `so_tien_yeu_cau` bằng code trước khi gọi model diễn đạt; kiểm `order["user_id"] != user_id` trong `check_cancel`; prompt `WRITE_SYSTEM` cấm thêm số tiền/voucher/chính sách; `check_llm` rà số tiền lạ, cụm cấm (`voucher`, `boi thuong`, `hoan 100`, `cam ket`, `da hoan`…), cụm nói trái quyết định — nếu vi phạm thì loại chữ model, dùng bản nháp code và ghi `note` vào trace. |
 
 ## §10. Phân công & changelog
 - Phân công có tên (CP2, chia cặp): **Cặp 1** Nguyễn Công Tĩnh (code `codebase/`, data giả lập, §4, nối model, nộp) + Dương Tuấn Hưng (khảo sát, đọc tay review, canvas, §3) · **Cặp 2** Nguyễn Ngọc Minh Đức (phỏng vấn, §5, §7) + Trần Đăng Khoa (benchmark, metric, data card); Đức + Khoa chấm chéo 5 output.
@@ -199,6 +214,7 @@ Ghi chú B01: ca SF1001 chờ lâu tạo nháp hủy chờ khách xác nhận, h
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
+| 28/11/2026 · CP4 · Điền §9 Rủi ro & an toàn | Hoàn thiện `spec.md` §9 (ẩn danh/bảo vệ dữ liệu, ranh giới cấm của AI, bảng bên chịu hại và cơ chế chặn 4 lớp), soạn nội dung slide trang 1–3 tại `slides/slides-1-3.md`, và cập nhật dòng Slide và tài liệu khác trong `docs/ai-usage.md`. Giữ nguyên §7, benchmark, metric, code và kết quả các lượt đã chạy. | Hoàn thành hạng mục CP4 phần Hưng phụ trách theo phân công nhóm; đối chiếu trực tiếp với `spec.md` §1–§6, `codebase/agent.py`, `codebase/tools.py`, `data/DATA_CARD.md` và `evidence/summary.md`. |
 | 28/11/2026 · CP3 · Tích hợp điểm và tổng hợp lượt 1 | Giữ điểm B01–B13 của Khoa từ main 0284c6e, bổ sung điểm B14–B25 đã được Đức duyệt; chạy score: 17/25 đạt (68%). | Thường 4/5, khó 11/18, từ chối/tấn công 2/2; chưa đạt tỷ lệ ít nhất 20/25. Chưa thực hiện soát chéo hoặc tổng hợp đủ các metric riêng; giữ nguyên code, output, trace, benchmark, metric và §7. |
 | 28/11/2026 · CP3 · Hoàn tất chấm phần Đức | Điền pass=1 và ghi_chu cho B14/B15/B16/B17/B18/B22/B23/B24 theo xác nhận của Đức; giữ 4 điểm 0 đã duyệt. | Đã nhập đủ B14–B25: 8 đạt, 4 trượt. Chờ điểm B01–B13 và soát chéo; giữ nguyên output, trace, code, benchmark, metric và §7. |
 | 28/11/2026 · CP3 · Ghi điểm đã duyệt | Điền pass=0 và ghi_chu cho B19/B20/B21/B25 của run-1@20261127-233849 theo xác nhận của Đức; cập nhật trạng thái hồ sơ. | Ghi nhận 4 điểm đã duyệt. Giữ nguyên 8 đề xuất còn lại, phần của Khoa, output, trace, code, benchmark, metric và §7; chưa có kết quả toàn bộ lượt. |
